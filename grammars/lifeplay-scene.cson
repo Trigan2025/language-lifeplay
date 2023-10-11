@@ -1,0 +1,618 @@
+fileTypes: [
+	"lpscene"
+	"lpai"
+]
+name: "LifePlay Scene & AI"
+scopeName: "source.lifeplay-scene"
+limitLineLength: false
+patterns: [
+	{
+		comment: "This is to allow lpai and lpscene snippets."
+		begin: "^(?=(?i:LP))"
+		end: "\\z"
+	}
+	{
+		begin: "^(?=WHAT|WHERE|WHEN|WHO|OTHER)"
+		end: "\\z"
+		name: "lpscene"
+		patterns: [{ include: "#lpscene" }]
+	}
+	{
+		comment: "If the previous is not matched, then it is surely the 1st line of a lpai."
+		begin: "^(.*)\\r?\\n"
+		beginCaptures:
+			0: name: "comment.line1"
+		end: "\\z"
+		name: "lpai"
+		patterns: [{
+			include: "#line2"
+		}]
+	}
+]
+repository:
+	isNone:
+		patterns: [{
+			match: "\\s*((?i:none))\\s*"
+			captures:
+				1: name: "constant.none"
+		}]
+	identifier:
+		patterns: [{
+			comment: "I am not sure if there is really limitations in what should be accepted since it is not mentionned in the documentations, so lets be simple."
+			match: "\\s*(?:(\\w+)|(\\w*)([^\\w\\s]+).*)\\s*"
+			captures:
+				1: name: "entity.name.section.label"
+				2: name: "entity.name.section.label"
+				3: name: "invalid"
+		}]
+	identifiers:
+		patterns: [{
+			begin: "^\\s*([^\\s,]*)"
+			beginCaptures:
+				1: patterns: [{ include: "#identifier" }]
+			end: "\\s*(,)?\\s*$"
+			endCaptures:
+				1: name: "invalid"
+			patterns: [{
+				match: "\\s*(,)\\s*([^\\s,]*)"
+				captures:
+					1: name: "meta.separator"
+					2: patterns: [{ include: "#identifier" }]
+			}]
+		}]
+	identifier_flags:
+		patterns: [{
+			begin: "^\\s*(-?)([^\\s,]*)"
+			beginCaptures:
+				1: name: "keyword.other.unit"
+				2: patterns: [{ include: "#identifier" }]
+			end: "\\s*(,)?\\s*$"
+			endCaptures:
+				1: name: "invalid"
+			patterns: [{
+				match: "\\s*(,)\\s*(-?)([^\\s,]*)"
+				captures:
+					1: name: "meta.separator"
+					2: name: "keyword.other.unit"
+					3: patterns: [{ include: "#identifier" }]
+			}]
+		}]
+	bool:
+		patterns: [{
+			match: "\\s*((?i:true|false))\\s*"
+			captures:
+				1: name: "constant.boolean"
+		}]
+	float:
+		patterns: [{
+			match: "\\s*(([+-]?)[0-9]+(?:\\.[0-9]+)?)\\s*"
+			captures:
+				1: name: "constant.numeric"
+				2: name: "keyword.operator.other.unit"
+		}]
+	float_range:
+		patterns: [{
+			match: "^\\s*(([+-]?)[0-9]+(?:\\.[0-9]+)?)\\s*(-)\\s*(([+-]?)[0-9]+(?:\\.[0-9]+)?)\\s*$"
+			captures:
+				1: name: "constant.numeric"
+				2: name: "invalid.illegal"
+				3: name: "meta.separator.dash"
+				4: name: "constant.numeric"
+				5: name: "invalid.illegal"
+		}]
+	variable:
+		patterns: [
+			{ include: "#isNone" }
+			{ include: "#bool" }
+			{ include: "#float" }
+			{
+				match: "\\s*([a-zA-Z_]\\w*)(?:(\\.)([a-zA-Z_]\\w*)|(:)([a-zA-Z_]\\w*))"
+				captures:
+					1: name: "meta.class.variable"
+					2: name: "meta.delimiter.period"
+					3: name: "variable"
+					4: name: "meta.delimiter.colon"
+					5: name: "variable.other.member"
+			}
+			{
+				comment: "Since we can’t make clear distinctions between on object, a var, and a stat, let just specified that an object begin by a upercase and the others by a lowercase or dash."
+				match: "\\s*(?:([A-Z]\\w*)|([a-z_]\\w*))"
+				captures:
+					1: name: "meta.class.variable"
+					2: name: "variable"
+			}
+		]
+	param_variable:
+		patterns: [
+			{ include: "#isNone" }
+			{ include: "#bool" }
+			{ include: "#float" }
+			{
+				match: "\\s*([a-zA-Z_]\\w*)(?:(\\.)([a-zA-Z_]\\w*)|(:)([a-zA-Z_]\\w*))"
+				captures:
+					1: name: "meta.class.variable"
+					2: name: "meta.delimiter.period"
+					3: name: "variable"
+					4: name: "meta.delimiter.colon"
+					5: name: "variable.other.member"
+			}
+			{
+				comment: "Since it can be anything, lets just simply name it."
+				match: "\\s*((?:[^,\\s\\)]+|\\s+(?![,\\)]))+)"
+				captures:
+					1: name: "function.parameter.variable"
+			}
+		]
+	isSpecialFnt:
+		patterns: [
+			{
+				match: "^\\s*(?i:(\\.)\\s*(?:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|setDatingId|getID)|(convertToLocalCurrency))|(Random|Round|Floor|Power)|(\\.?)\\s*(.*))\\s*$"
+				captures:
+					1: name: "meta.delimiter.period"
+					2: name: "entity.name.support.function"
+					3: name: "entity.name.support.function.any-method"
+					4: name: "entity.name.support.function.any-method"
+					5: name: "meta.delimiter.period"
+					6: name: "entity.name.function"
+			}
+		]
+	cmt_or_err:
+		patterns: [
+			{
+				match: "(//.*)$"
+				captures:
+					1: name: "comment"
+			}
+			{
+				match: "([^/]).*$"
+				captures:
+					1: name: "invalid.illegal"
+			}
+		]
+	_statement:
+		patterns: [
+			{
+				match: "\\s*(\"(?:[^\"\\\\]|\\\")*\")"
+				captures:
+					1: patterns: [{ include: "#string" }]
+			}
+			{
+				begin: "\\s*(?:([a-zA-Z_]\\w*)\\s*)?((?(1)\\.\\s*)[a-zA-Z]\\w*)\\s*(\\()(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				beginCaptures:
+					1: name: "meta.class.variable"
+					2: patterns: [{ include: "#isSpecialFnt" }]
+					3: name: "punctuation.definition.parameters.begin.bracket.round"
+					4: name: "keyword.operator.other.unit"
+					5: name: "keyword.operator"
+				end: "\\s*(\\))"
+				endCaptures:
+					1: name: "punctuation.definition.parameters.end.bracket.round"
+				patterns: [{ include: "#parameters" }]
+			}
+			{
+				begin: "\\s*(\\[)(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				beginCaptures:
+					1: name: "keyword.control.storage.begin.bracket.square"
+					2: name: "keyword.operator.other.unit"
+					3: name: "keyword.operator"
+				end: "\\s*(\\])"
+				endCaptures:
+					1: name: "keyword.control.storage.end.bracket.square"
+				patterns: [{
+					begin: "(?!\\])"
+					end: "(?=\\]|//|$)"
+					patterns: [{ include: "#embedded_statement" }]
+				}]
+			}
+			{
+				comment: "A closing bracket seemingly unpaired."
+				match: "\\s*([\\)\\]])"
+				captures:
+					1: name: "invalid.illegal"
+			}
+			{
+				match: "\\s*(?:([+*-]|/(?!/)|[<>]=?|[!=]=)|([|&]{2}))(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				captures:
+					1: name: "keyword.operator"
+					2: name: "keyword.operator.control"
+					3: name: "keyword.operator.other.unit"
+					4: name: "keyword.operator"
+			}
+			{ include: "#variable" }
+		]
+	embedded_statement:
+		patterns: [
+			{ include: "#_statement" }
+			{
+				match: "\\s*(//)"
+				captures:
+					1: name: "invalid"
+			}
+		]
+	statement:
+		patterns: [
+			{ include: "#_statement" }
+			{
+				match: "\\s*(//.*)$"
+				captures:
+					1: name: "comment"
+			}
+		]
+	inline:
+		patterns: [{
+			begin: "^"
+			end: "$"
+			patterns: [
+				{
+					match: "(.*)\\s*(;)\\s*((?i:If)?)"
+					captures:
+						1: patterns: [{ include: "#inline" }]
+						2: name: "keyword.control.separator"
+						3: name: "keyword"
+				}
+				{
+					match: "\\s*(?:([a-zA-Z_]\\w*)(:))?([a-zA-Z_]\\w*)\\s*(=>)"
+					captures:
+						1: name: "meta.class.variable"
+						2: name: "meta.delimiter.colon"
+						3: name: "variable.other.member"
+						4: name: "keyword.operator"
+				}
+				{
+					match: "\\s*([a-zA-Z_]\\w*)(?:(?:(\\.)([a-zA-Z_]\\w*))?\\s*([+*/-]=|=(>?))|(:)([a-zA-Z_]\\w*)\\s*([+*/-]=|=>|=([^>])))"
+					captures:
+						1: name: "meta.class.variable"
+						2: name: "meta.delimiter.period"
+						3: name: "variable"
+						4: name: "keyword.operator"
+						5: name: "invalid.illegal"
+						6: name: "meta.delimiter.colon"
+						7: name: "variable.other.member"
+						8: name: "keyword.operator"
+						9: name: "invalid.illegal"
+				}
+				{ include: "#_statement" }
+				{
+					match: "\\s*(//.*)$"
+					captures:
+						1: name: "comment"
+				}
+			]
+		}]
+	interpolations:
+		patterns: [{
+			begin: "(<)"
+			beginCaptures:
+				1: name: "punctuation.section.embedded.begin.bracket.angle"
+			end: "(>)"
+			endCaptures:
+				1: name: "punctuation.section.embedded.end.bracket.angle"
+			patterns: [{
+				match: "((?:[^\\\\>]|\\\\.)*)"
+				captures:
+					1: patterns: [{ include: "#embedded_statement" }]
+			}]
+		}]
+	string:
+		patterns: [{
+			begin: "^\\s*(\")"
+			beginCaptures:
+				1: name: "string.quote.double.begin"
+			end: "(\")"
+			endCaptures:
+				1: name: "string.quote.double.end"
+			contentName: "string"
+			patterns: [
+				{
+					match: "(\\\\.)"
+					captures:
+						1: name: "constant.character.escape"
+				}
+				{ include: "#interpolations" }
+			]
+		}]
+	parameters:
+		patterns: [{
+			match: "((?:(?:[a-zA-Z_]\\w*\\s*)(?!\\()|(?:[^a-zA-Z_\\s)(][^)(\\s]*\\s*)|\\s*,\\s*|\\s+)+)(?=\\))"
+			captures:
+				1: patterns: [
+					{
+						match: "\\s*(//).*$"
+						captures:
+							1: name: "invalid.illegal"
+					}
+					{
+						match: "\\s*(,)"
+						captures:
+							1: name: "meta.separator"
+					}
+					{
+						match: "\\s*(\"(?:[^\"\\\\]|\\\")*\")"
+						captures:
+							1: patterns: [{ include: "#string" }]
+					}
+					{
+						match: "\\s*(?:([+*-]|/(?!/)|[<>]=?|[!=]=)|([|&]{2}))(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+						captures:
+							1: name: "keyword.operator"
+							2: name: "keyword.operator.control"
+							3: name: "keyword.operator.other.unit"
+							4: name: "keyword.operator"
+					}
+					{ include: "#param_variable" }
+				]
+		}]
+	if:
+		patterns: [{
+			begin: "^"
+			end: "$"
+			patterns: [{ include: "#statement" }]
+		}]
+	effect:
+		patterns: [
+			{
+				match: "(START|END|DURATION|INTERRUPTED|STAT_COMPARE)"
+				name: "constant"
+			}
+			{
+				match: "(BUFF)(?:(\\s*)(:)(\\s*)([+-]?[0-9.]+))?"
+				captures:
+					1: name: "constant"
+					2: name: "invalid.illegal"
+					3: name: "keyword.operator"
+					4: name: "invalid.illegal"
+					5: patterns: [{ include: "#float" }]
+			}
+			{
+				comment: "Unofficial effect keyword."
+				match: "([A-Z]+)(?:(\\s*)(:)(\\s*)([+-]?[0-9.]+))?"
+				captures:
+					1: name: "variable"
+					2: name: "invalid.illegal"
+					3: name: "keyword.operator"
+					4: name: "invalid.illegal"
+					5: patterns: [{ include: "#float" }]
+			}
+		]
+	stat_conditions:
+		patterns: [
+			{
+				match: "^\\s*(,)"
+				captures:
+					1: name: "meta.separator"
+			}
+			{
+				match: "^\\s*(?:([!=]=|[<>]=?)|(&&|\\|\\|))"
+				captures:
+					1: name: "keyword.operator"
+					2: name: "keyword.operator.control"
+			}
+			{
+				match: "\\s*([+-]?[0-9.]+)"
+				captures:
+					1: patterns: [{ include: "#float" }]
+			}
+			{
+				match: "^\\s*([a-zA-Z]\\w*)"
+				captures:
+					1: name: "variable"
+			}
+			{
+				match: "^\\s*(\\()([A-Z]+(?:\\s*:\\s*(?:[+-]?[0-9.]+)?)?)(\\))"
+				captures:
+					1: name: "punctuation.section.parens.open"
+					2: patterns: [{ include: "#effect" }]
+					3: name: "punctuation.section.parens.close"
+			}
+		]
+	line2:
+		patterns: [{
+			begin: "^(.*)\r?\n"
+			beginCaptures:
+				0: name: "comment.line2"
+			end: "\\z"
+			patterns: [{ include: "#line3" }]
+		}]
+	line3:
+		patterns: [{
+			begin: "^(.*)\r?\n"
+			beginCaptures:
+				0: name: "comment.line3"
+			end: "\\z"
+			patterns: [{ include: "#line4" }]
+		}]
+	line4:
+		patterns: [{
+			begin: "^(.*)\r?\n"
+			beginCaptures:
+				0: name: "comment.line4"
+			end: "\\z"
+			patterns: [{ include: "#line5" }]
+		}]
+	line5:
+		patterns: [{
+			begin: "^(.*)\r?\n"
+			beginCaptures:
+				0: name: "comment.line5"
+			end: "\\z"
+			patterns: [{ include: "#lpai" }]
+		}]
+	lpai:
+		patterns: [{
+			begin: "^"
+			end: "\\z"
+			name: "lpai-body"
+			patterns: [{
+				include: "#lpai_body"
+			}]
+		}]
+	lpscene:
+		patterns: [
+			{
+				match: "^(WHAT|WHERE)(:)(?:(?:([^ \\r\\n])| )(.*))?$"
+				captures:
+					1: name: "punctuation.definition.heading.bold"
+					2: name: "keyword"
+					3: name: "invalid"
+					4: patterns: [
+						{ include: "#isNone" }
+						{ include: "#identifier_flags" }
+					]
+			}
+			{
+				match: "^(WHEN)(:)(?:(?:([^ \\r\\n])| )(.*))?$"
+				captures:
+					1: name: "punctuation.definition.heading.bold"
+					2: name: "keyword"
+					3: name: "invalid"
+					4: patterns: [{ include: "#float_range" }]
+			}
+			{
+				match: "^(WHO)(:)(?:(?:([^ \\r\\n])| )(.*))?$"
+				captures:
+					1: name: "punctuation.definition.heading.bold"
+					2: name: "keyword"
+					3: name: "invalid"
+					4: patterns: [{ include: "#inline" }]
+			}
+			{
+				match: "^(OTHER)(:)(?:(?:([^ \\r\\n])| )(.*))?$"
+				captures:
+					1: name: "punctuation.definition.heading.bold"
+					2: name: "keyword"
+					3: name: "invalid"
+					4: patterns: [{ include: "#if" }]
+			}
+			{
+				comment: "Lets mark the first line that do not match as the trigger to enter the body part."
+				begin: "^"
+				end: "\\z"
+				name: "lpscene-body"
+				patterns: [{
+					include: "#lpscene_body"
+				}]
+			}
+		]
+	lp_body_init:
+		patterns: [
+			{
+				match: "^\\s*((?://.*)?)$"
+				captures:
+					1: name: "comment"
+			}
+			{
+				match: "^(?:[ ]{4})*[ ]{1,3}([^ \\r\\n])"
+				captures:
+					1: name: "invalid.illegal"
+			}
+		]
+	lp_body:
+		patterns: [
+			{
+				match: "^(?:[ ]{4})+((?i:End(?:If|While|Random)|Random(?!\\s*\\()))\\s*(\\S.*)?$"
+				captures:
+					1: name: "keyword"
+					2: patterns: [{ include: "#cmt_or_err" }]
+			}
+			{
+				match: "^(?:[ ]{4})+((?i:Else|(?:Else)?If|While))\\s+(.*)$"
+				captures:
+					1: name: "keyword"
+					2: patterns: [{ include: "#if" }]
+			}
+		]
+	lp_body_post:
+		patterns: [
+			{
+				match: "^(?:[ ]{4})+(?:([a-zA-Z_]\\w*)(\\:))?([a-zA-Z_]\\w*)\\s*(=>)\\s*(.*)$"
+				captures:
+					1: name: "meta.class.variable"
+					2: name: "meta.delimiter.colon"
+					3: name: "variable.other.member"
+					4: name: "keyword.operator"
+					5: patterns: [{ include: "#statement" }]
+			}
+			{
+				match: "^(?:[ ]{4})+([a-zA-Z_]\\w*)(?:(?:(\\.)([a-zA-Z_]\\w*))?\\s*([+*/-]=|=(>?))|(:)([a-zA-Z_]\\w*)\\s*([+*/-]=|=>|=([^>])))\\s*(.*)$"
+				captures:
+					1: name: "meta.class.variable"
+					2: name: "meta.delimiter.period"
+					3: name: "variable"
+					4: name: "keyword.operator"
+					5: name: "invalid.illegal"
+					6: name: "meta.delimiter.colon"
+					7: name: "variable.other.member"
+					8: name: "keyword.operator"
+					9: name: "invalid.illegal"
+					10: patterns: [{ include: "#statement" }]
+			}
+			{
+				begin: "^(?:[ ]{4})+(?:([a-zA-Z_]\\w*)\\s*)?((?(1)\\.\\s*)[a-zA-Z]\\w*)\\s*(\\()(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				beginCaptures:
+					1: name: "meta.class.variable"
+					2: patterns: [{ include: "#isSpecialFnt" }]
+					3: name: "punctuation.definition.parameters.begin.bracket.round"
+					4: name: "keyword.operator.other.unit"
+					5: name: "keyword.operator"
+				end: "\\s*(\\))\\s*(.*)$"
+				endCaptures:
+					1: name: "punctuation.definition.parameters.end.bracket.round"
+					2: patterns: [{ include: "#statement" }]
+				patterns: [{ include: "#parameters" }]
+			}
+		]
+	lpai_body:
+		patterns: [
+			{ include: "#lp_body_init" }
+			{ include: "#lp_body" }
+			{ include: "#lp_body_post" }
+		]
+	lpscene_body:
+		patterns: [
+			{ include: "#lp_body_init" }
+			{ include: "#lp_body" }
+			{
+				match: "^(?:[ ]{4})+((?i:Scene(?:Start|End)|QuestEnd))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
+				captures:
+					1: name: "entity.name.support.function"
+					2: name: "punctuation.definition.parameters.begin.bracket.round"
+					3:
+						comment: "Can somthing can be put here? Lets just suppose no for now."
+						name: "invalid"
+					4: name: "punctuation.definition.parameters.end.bracket.round"
+					5: patterns: [{ include: "#cmt_or_err" }]
+			}
+			{
+				match: "^(?:[ ]{4})+((?i:followUp))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
+				captures:
+					1: name: "entity.name.support.function"
+					2: name: "punctuation.definition.parameters.begin.bracket.round"
+					3: patterns: [{ include: "#identifier" }]
+					4: name: "punctuation.definition.parameters.end.bracket.round"
+					5: patterns: [{ include: "#cmt_or_err" }]
+			}
+			{
+				match: "^(?:[ ]{4})+([a-zA-Z_]\\w*)(\\.)((?i:passOn))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
+				captures:
+					1: name: "entity.name.support.function"
+					2: name: "punctuation.definition.parameters.begin.bracket.round"
+					3: name: "invalid"
+					4: name: "punctuation.definition.parameters.end.bracket.round"
+					5: patterns: [{ include: "#cmt_or_err" }]
+			}
+			{
+				match: "^(?:[ ]{4})+(?:(?:([a-zA-Z_]\\w*)\\s*(?:(\\()\\s*([a-zA-Z]\\w*)\\s*(\\))\\s*)?|(-?[0-9]+)(?:\\s*(::)(.+))?)\\s*(::)\\s*)?(\"(?:[^\"\\\\]|\\\")*\")\\s*(.*)$"
+				captures:
+					1: name: "meta.class.variable"
+					2: name: "punctuation.section.parens.begin"
+					3: patterns: [{ include: "#identifier" }]
+					4: name: "punctuation.section.parens.end"
+					5: patterns: [{ include: "#float" }]
+					6: name: "keyword.control"
+					7: patterns: [{ include: "#if" }]
+					8: name: "keyword.control"
+					9: patterns: [{ include: "#string" }]
+					10: patterns: [{ include: "#cmt_or_err" }]
+			}
+			{ include: "#lp_body_post" }
+		]

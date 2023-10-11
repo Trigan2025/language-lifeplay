@@ -1,0 +1,16 @@
+'.lifeplay-mod.source':
+  editor:
+    tabLength: 4
+    tabType: "soft"
+'.lifeplay-scene.source':
+  editor:
+    tabLength: 4
+    tabType: "soft"
+    increaseIndentPattern: "(?i)^( {4})+((?:else)?if .*|while .*|(?:else|random) *(?://.*)?)$"
+    decreaseIndentPattern: "(?i)^( {4})+(end(if|while|random)|elseif)"
+'.lifeplay-talkdesc.source':
+  editor:
+    tabLength: 4
+    tabType: "soft"
+    increaseIndentPattern: "(?i)^[^ ].*$"
+    decreaseIndentPattern: "(?i)^( {1,4})##"

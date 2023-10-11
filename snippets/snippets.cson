@@ -1,0 +1,247 @@
+'.source.lifeplay-mod':
+	'MODULE':
+		'prefix': 'MODULE_'
+		'description': 'Will generate the default body of an module file.'
+		'body': """
+			MODULE_UNIQUEID: $1
+			MODULE_NAME: $2
+			MODULE_AUTHOR: $3
+			MODULE_LINK: ${4:none}
+			MODULE_DESCRIPTION: $5
+			MODULE_REQUIREMENTS: $6
+		"""
+	'QUEST':
+		'prefix': 'QUEST'
+		'description': 'Will generate the default body of a quest file.'
+		'body': """
+			ID: $1
+			NAME: $2
+			DESC: $3
+			ONCE: ${4:true}
+			START: $5
+			CONDITIONS: ${6:none}
+		"""
+	'ACTION':
+		'prefix': 'ACTION_'
+		'description': 'Will generate the default body of an action file.'
+		'body': """
+			ACTION_UNIQUEID: $1
+			ACTION_NAME: $2
+			WHERE: ${3:none}
+			WHEN: ${4:0-24}
+			MINUTES: ${5:1-2}
+			TIMEOUT_MINUTES: ${6:0}
+			MOVE_FIRST: ${7:true}
+			EFFECTS: $8
+			CONDITIONS: $9
+			ANIMATION: $10
+			SCENE_ALWAYS: $11
+			ALSO_TIMEOUT: $12
+		"""
+	'STAT':
+		'prefix': 'STAT_'
+		'description': 'Will generate the default body of a stat file.'
+		'body': """
+			STAT_ID: $1
+			STAT_NAME: $2
+			PLAYER_ONLY: ${3:false}
+			NPC_ONLY: ${4:false}
+			STAT_MIN: ${5:0}
+			STAT_MAX: ${6:100}
+			HIGHER_BETTER: ${7:true}
+			DEFAULT_VALUE: ${8:0}
+			DAILY_CHANGE: ${9:0}
+		"""
+
+'.source.lifeplay-scene:not(.lpscene):not(.lpai)':
+	'SCENE':
+		'prefix': 'LPSCENE'
+		'description': 'Will generate the default body of a lpscene file.'
+		'rightLabelHTML': '<span class="comment">With headers of course</span>'
+		'body': """
+			WHAT: ${1:none}
+			WHERE: ${2:none}
+			WHEN: ${3:0-24}
+			WHO: ${4:none}
+			OTHER: $5
+			    SceneStart()
+			    $0
+			    SceneEnd()${6:
+			    timeout(${7:744}, ${8:scene_id})}
+		"""
+	'AI':
+		'prefix': 'LPAI'
+		'description': 'Will generate the default body of a lpai file.'
+		'rightLabelHTML': '<span class="comment">With the no-headers of course</span>'
+		'body': "\r\n\r\n\r\n\r\n\r\n    ${1:Current = AI.getBuilding(current)}\r\n    $0\r\n"
+
+'.source.lifeplay-scene .lpscene .lpscene-body':
+	'Ends Quest':
+		'prefix': 'queste'
+		'leftLabelHTML': '<span class="syntax--entity syntax--name syntax--support syntax--function">questEnd</span><span class="syntax--punctuation syntax--definition syntax--parameters syntax--bracket syntax--round">()</span>'
+		'description': 'If this is a quest scene, this is the function to ends the quest.'
+		'body': "questEnd()"
+'.source.lifeplay-scene .lpscene .lpscene-body, .source.lifeplay-scene .lpai .lpai-body':
+	'If, ElseIf, Else, EndIf':
+		'prefix': 'IfElse'
+		'description': 'Will unwrap a generic If ElseIf structure.'
+		'body': """
+			If ${1:1}
+			    $3
+			ElseIf ${2:2}
+			    $4
+			Else
+			    $0
+			EndIf
+		"""
+	'While':
+		'prefix': 'While'
+		'description': 'Will simply unwrap the structure of the While EndWhile structure.'
+		'body': """
+			While ${1:continue == true}
+			    ${2:continue = false}
+			    $0
+			EndWhile
+		"""
+	'RandomFnt':
+		'prefix': 'RandF'
+		'description': 'The Random function.'
+		'rightLabelHTML': '<span class="comment">Random function</span>'
+		'body': "Random($1, $2)$0"
+	'Random':
+		'prefix': 'Random'
+		'description': 'Will simply unwrap the structure of the Random EndRandom structure.'
+		'body': """
+			Random
+			    ${1:A = X}
+			    ${2:A = Y}
+			EndRandom
+			$0
+		"""
+
+'.source.lifeplay-character':
+	'INFO':
+		'prefix': 'Info'
+		'description': 'Will write down all the official info labels of a lp-character.'
+		'body': """
+			// Informations
+			INFO First_Name: ${1:100% Anonymous}
+			INFO Last_Name: ${2:100% X}
+			INFO Is_Male: ${3:50% true, 50% false}
+			INFO Genital: ${4:49% Penis, 49% Vagina, 2% None}
+			INFO Race: ${5:1% DAZ, 33% African, 33% Asian, 33% Caucasian}
+			INFO Interested_In_Men: ${6:50% true, 50% false}
+			INFO Interested_In_Women: ${7:50% true, 50% false}
+			INFO Interested_In_Transgender: ${8:50% true, 50% false}
+		"""
+	'Player STATS':
+		'prefix': 'PlayerStats'
+		'description': 'Will write down all the official stat labels of a playable lp-character.'
+		'rightLabelHTML': '<span class="comment">Including those of official modules.</span>'
+		'body': """
+			// Stats
+			STAT age: ${1:100% 18 => 100}
+			STAT children: ${2:100% 0}
+			STAT fertility: ${3:100% 0 => 100}
+			STAT money: ${4:100% 0 => 2000}
+			STAT perks: ${5:100% 0}
+			STAT energy: ${6:100% 33 => 100}
+			STAT mood: ${7:100% 50}
+			STAT karma: ${8:100% 0 => 100}
+			STAT intoxication: ${9:100% 0}
+			STAT attractiveness: ${10:100% 25 => 80}
+			STAT jobexperience: ${11:100% 0 => 10}
+			STAT jobperformance: ${12:100% 0 => 1}
+			STAT politics: ${13:100% -1 => 1}
+			STAT intelligence: ${14:100% 0 => 100}
+			STAT interpersonal: ${15:100% 0 => 100}
+			STAT cooking: ${16:100% 0 => 100}
+			STAT music: ${17:100% 0 => 100}
+			STAT dance: ${18:100% 0 => 100}
+			STAT sneak: ${19:100% 0 => 100}
+			STAT fitness: ${20:100% 0 => 100}
+			STAT martial: ${21:100% 0 => 100}
+			STAT muscle: ${22:100% 0 => 100}
+			STAT likes_older: ${23:100% -100 => 100}
+			STAT likes_arab: ${24:100% -100 => 100}
+			STAT likes_asian: ${25:100% -100 => 100}
+			STAT likes_black: ${26:100% -100 => 100}
+			STAT likes_indian: ${27:100% -100 => 100}
+			STAT likes_latin: ${28:100% -100 => 100}
+			STAT likes_white: ${29:100% -100 => 100}
+			// Sex-related stats
+			STAT pornfame: ${30:100% 0}
+			STAT perversion: ${31:100% 0 => 1}
+			STAT arousal: ${32:100% 0 => 33}
+			STAT masochist: ${33:100% -100 => 100}
+			STAT prone_to_orgasm: ${34:100% 0 => 100}
+			STAT likes_lactation: ${35:100% -100 => 0}
+			STAT likes_oral: ${36:100% -100 => 100}
+			STAT likes_anal: ${37:100% -100 => 100}
+			STAT likes_vaginal: ${38:100% -100 => 100}
+			STAT likes_toys: ${39:100% -100 => 100}
+			STAT likes_handjob: ${40:100% -100 => 100}
+			STAT likes_boobjob: ${41:100% -100 => 100}
+			STAT likes_tribadism: ${42:100% -100 => 100}
+			STAT likes_bondage: ${43:100% -100 => 100}
+			STAT likes_public: ${44:100% -100 => 100}
+			STAT likes_rough: ${45:100% -100 => 100}
+			STAT likes_cowgirl: ${46:100% -100 => 100}
+			STAT likes_rcowgirl: ${47:100% -100 => 100}
+			STAT likes_doggy: ${48:100% -100 => 100}
+			STAT likes_missionary: ${49:100% -100 => 100}
+			STAT likes_sidefuck: ${50:100% -100 => 100}
+		"""
+	'NPC STATS':
+		'prefix': 'NpcStats'
+		'description': 'Will write down all the official stat labels of a NPC lp-character.'
+		'rightLabelHTML': '<span class="comment">Including those of official modules.</span>'
+		'body': """
+			// Stats
+			STAT age: ${1:100% 18 => 100}
+			STAT fertility_npc: ${2:100% 0 => 100}
+			STAT intoxication: ${3:100% 0}
+			STAT rapportwithplayer: ${4:100% -10 => 10}
+			STAT attractiontoplayer: ${5:100% -10 => 10}
+			STAT attractiveness: ${6:100% 25 => 80}
+			STAT jobexperience: ${7:100% 0 => 10}
+			STAT politics: ${8:100% -10 => 10}
+			STAT intelligence: ${9:100% 0 => 100}
+			STAT interpersonal: ${10:100% 0 => 100}
+			STAT cooking: ${11:100% 0 => 100}
+			STAT music: ${12:100% 0 => 100}
+			STAT dance: ${13:100% 0 => 100}
+			STAT sneak: ${14:100% 0 => 100}
+			STAT fitness: ${15:100% 0 => 100}
+			STAT martial: ${16:100% 0 => 100}
+			STAT muscle: ${17:100% 0 => 100}
+			STAT likes_older: ${18:100% -100 => 100}
+			STAT likes_arab: ${19:100% -100 => 100}
+			STAT likes_asian: ${20:100% -100 => 100}
+			STAT likes_black: ${21:100% -100 => 100}
+			STAT likes_indian: ${22:100% -100 => 100}
+			STAT likes_latin: ${23:100% -100 => 100}
+			STAT likes_white: ${24:100% -100 => 100}
+			// Sex-related stats
+			STAT pornfame: ${25:100% 0}
+			STAT perversion: ${26:100% 0 => 1}
+			STAT arousal: ${27:100% 0 => 33}
+			STAT masochist: ${28:100% -100 => 100}
+			STAT prone_to_orgasm: ${29:100% 0 => 100}
+			STAT likes_lactation: ${30:100% -100 => 0}
+			STAT likes_oral: ${31:100% -100 => 100}
+			STAT likes_anal: ${32:100% -100 => 100}
+			STAT likes_vaginal: ${33:100% -100 => 100}
+			STAT likes_toys: ${34:100% -100 => 100}
+			STAT likes_handjob: ${35:100% -100 => 100}
+			STAT likes_boobjob: ${36:100% -100 => 100}
+			STAT likes_tribadism: ${37:100% -100 => 100}
+			STAT likes_bondage: ${38:100% -100 => 100}
+			STAT likes_public: ${39:100% -100 => 100}
+			STAT likes_rough: ${40:100% -100 => 100}
+			STAT likes_cowgirl: ${41:100% -100 => 100}
+			STAT likes_rcowgirl: ${42:100% -100 => 100}
+			STAT likes_doggy: ${43:100% -100 => 100}
+			STAT likes_missionary: ${44:100% -100 => 100}
+			STAT likes_sidefuck: ${45:100% -100 => 100}
+		"""

@@ -1,0 +1,10 @@
+WHAT: none
+	SceneStart()
+	continue = true
+	while continue
+		if true
+			continue = false
+	    	//...
+		endIf
+	endWhile
+	SceneEnd()

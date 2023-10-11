@@ -1,0 +1,197 @@
+fileTypes: [ "lpcharacter" ]
+name: "LifePlay Character"
+scopeName: "source.lifeplay-character"
+patterns: [
+	{
+		match: "^\\s*(//.*)$"
+		captures:
+			1: name: "comment"
+	}
+	{
+		match: "^(INFO)\\s+(Is_Male|Interested_In_(?:Men|Women|Transgender))\\s*(:)(.*)$"
+		captures:
+			1: patterns: [{ include: "#flag" }]
+			2: name: "storage.entity.name.section"
+			3: name: "keyword.control"
+			4: patterns: [{ include: "#bool_values" }]
+	}
+	{
+		match: "^(INFO)\\s+((?:First|Last)_Name)\\s*(:)(.*)$"
+		captures:
+			1: patterns: [{ include: "#flag" }]
+			2: name: "storage.entity.name.section"
+			3: name: "keyword.control"
+			4: patterns: [{ include: "#none_values" }]
+	}
+	{
+		match: "^(INFO)\\s+(Race)\\s*(:)(.*)$"
+		captures:
+			1: patterns: [{ include: "#flag" }]
+			2: name: "storage.entity.name.section"
+			3: name: "keyword.control"
+			4: patterns: [{ include: "#race_values" }]
+	}
+	{
+		match: "^(INFO)\\s+(Genital)\\s*(:)(.*)$"
+		captures:
+			1: patterns: [{ include: "#flag" }]
+			2: name: "storage.entity.name.section"
+			3: name: "keyword.control"
+			4: patterns: [{ include: "#genital_values" }]
+	}
+	{
+		match: "^([A-Z]+[A-Z_]*)\\s+([^\\s\\\\/:;]+)(?:\\s+((?:\\s*[^\\s\\\\/:;]+)*))?\\s*(:)(.*)$"
+		captures:
+			1: patterns: [{ include: "#flag" }]
+			2: name: "storage.entity.name.section"
+			3: name: "storage.entity.name.section.label"
+			4: name: "keyword.control"
+			5: patterns: [{ include: "#values" }]
+	}
+]
+repository:
+	flag:
+		patterns: [
+			{
+				match: "^(INFO|MORPH|SCALE|HAIR|SKIN|STAT)$"
+				name: "storage.entity.name.tag"
+			}
+			{
+				match: "^.*$"
+				name: "storage.name"
+			}
+		]
+	isNone:
+		patterns: [{
+			match: "^\\s*((?i:none))\\s*$"
+			captures:
+				1: name: "constant.none"
+		}]
+	bool:
+		patterns: [{
+			match: "^\\s*((?i:true|false))\\s*$"
+			captures:
+				1: name: "constant.boolean"
+		}]
+	float:
+		patterns: [{
+			match: "^\\s*(([+-]?)[0-9]+(?:\\.[0-9]+)?)\\s*$"
+			captures:
+				1: name: "constant.numeric"
+				2: name: "keyword.operator.other.unit"
+		}]
+	float_range:
+		patterns: [{
+			match: "^\\s*([+-]?[0-9]+(?:\\.[0-9]+)?)\\s*(=>)\\s*([+-]?[0-9]+(?:\\.[0-9]+)?)\\s*$"
+			captures:
+				1: patterns: [{ include: "#float" }]
+				2: name: "keyword.operator"
+				3: patterns: [{ include: "#float" }]
+		}]
+	value:
+		patterns: [
+			{ include: "#isNone" }
+			{ include: "#bool" }
+			{ include: "#float_range" }
+			{ include: "#float" }
+			{
+				match: "^.*$"
+				name: "none"
+			}
+		]
+	none_values:
+		patterns: [{
+			begin: "^"
+			end: "$"
+			patterns: [{
+				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				captures:
+					1: name: "meta.separator"
+					2: patterns: [{ include: "#float" }]
+					3: name: "keyword.operator.other.unit"
+					4: patterns: [{
+						match: "^.*$"
+						name: "none"
+					}]
+			}]
+		}]
+	bool_values:
+		patterns: [{
+			begin: "^"
+			end: "$"
+			patterns: [{
+				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				captures:
+					1: name: "meta.separator"
+					2: patterns: [{ include: "#float" }]
+					3: name: "keyword.operator.other.unit"
+					4: patterns: [{ include: "#bool" }]
+			}]
+		}]
+	float_values:
+		patterns: [{
+			begin: "^"
+			end: "$"
+			patterns: [{
+				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				captures:
+					1: name: "meta.separator"
+					2: patterns: [{ include: "#float" }]
+					3: name: "keyword.operator.other.unit"
+					4: patterns: [
+						{ include: "#float_range" }
+						{ include: "#float" }
+					]
+			}]
+		}]
+	race_values:
+		patterns: [{
+			begin: "^"
+			end: "$"
+			patterns: [{
+				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				captures:
+					1: name: "meta.separator"
+					2: patterns: [{ include: "#float" }]
+					3: name: "keyword.operator.other.unit"
+					4: patterns: [{
+						match: "^(?i)(Daz|African|Asian|Caucasian)$"
+						captures:
+							1: name: "constant.keyword"
+					}]
+			}]
+		}]
+	genital_values:
+		patterns: [{
+			begin: "^"
+			end: "$"
+			patterns: [{
+				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				captures:
+					1: name: "meta.separator"
+					2: patterns: [{ include: "#float" }]
+					3: name: "keyword.operator.other.unit"
+					4: patterns: [
+						{ include: "#isNone" }
+						{
+							comment: "I don’t know if Both is support currently, maybe latter, but for now..."
+							match: "^(Penis|Vagina)$"
+							captures:
+								1: name: "constant.keyword"
+						}
+					]
+			}]
+		}]
+	values:
+		patterns: [{
+			begin: "^"
+			end: "$"
+			patterns: [{
+				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				captures:
+					1: name: "meta.separator"
+					2: patterns: [{ include: "#float" }]
+					3: name: "keyword.operator.other.unit"
+					4: patterns: [{ include: "#value" }]
+			}]
+		}]
