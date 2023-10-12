@@ -594,11 +594,13 @@ repository:
 			{
 				match: "^(?:[ ]{4})+([a-zA-Z_]\\w*)(\\.)((?i:passOn))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
 				captures:
-					1: name: "entity.name.support.function"
-					2: name: "punctuation.definition.parameters.begin.bracket.round"
-					3: name: "invalid"
-					4: name: "punctuation.definition.parameters.end.bracket.round"
-					5: patterns: [{ include: "#cmt_or_err" }]
+					1: name: "meta.class.variable"
+					2: name: "meta.delimiter.period"
+					3: name: "entity.name.support.function"
+					4: name: "punctuation.definition.parameters.begin.bracket.round"
+					5: name: "invalid"
+					6: name: "punctuation.definition.parameters.end.bracket.round"
+					7: patterns: [{ include: "#cmt_or_err" }]
 			}
 			{
 				match: "^(?:[ ]{4})+(?:(?:([a-zA-Z_]\\w*)\\s*(?:(\\()\\s*([a-zA-Z]\\w*)\\s*(\\))\\s*)?|(-?[0-9]+)(?:\\s*(::)(.+))?)\\s*(::)\\s*)?(\"(?:[^\"\\\\]|\\\")*\")\\s*(.*)$"
