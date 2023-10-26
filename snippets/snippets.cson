@@ -38,6 +38,24 @@
 			SCENE_ALWAYS: $11
 			ALSO_TIMEOUT: $12
 		"""
+	'INTERACTION':
+		'prefix': 'INTERACTION'
+		'description': 'Will generate the default body of an interaction file.'
+		'body': """
+			ACTION_UNIQUEID: $1
+			ACTION_NAME: $2
+			WHERE: ${3:none}
+			WHEN: ${4:0-24}
+			MINUTES: ${5:1-2}
+			TIMEOUT_MINUTES: ${6:0}
+			MOVE_FIRST: ${7:true}
+			EFFECTS: $8
+			CONDITIONS: $9
+			ANIMATION: $10
+			SCENE_ALWAYS: $11
+			ALSO_TIMEOUT: $12
+			WHO: $13
+		"""
 	'STAT':
 		'prefix': 'STAT_'
 		'description': 'Will generate the default body of a stat file.'

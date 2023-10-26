@@ -975,7 +975,7 @@ describe('Language-LifePlay', () => {
 					{ value: ")", scopes: [grammar.scopeName, 'punctuation.definition.parameters.end.bracket.round'] }
 				]);
 				expect(txt(tokens[1])).toEqual([
-					{ value: "I don’t know what came in my mind.", scopes: [grammar.scopeName] }
+					{ value: "I don’t know what came in my mind.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[2])).toEqual([
 					{ value: "##", scopes: [grammar.scopeName, 'keyword.control'] },
@@ -1014,7 +1014,7 @@ describe('Language-LifePlay', () => {
 					{ value: ")", scopes: [grammar.scopeName, 'punctuation.definition.parameters.end.bracket.round'] }
 				]);
 				expect(txt(tokens[4])).toEqual([
-					{ value: "I begin to search a chair.", scopes: [grammar.scopeName] }
+					{ value: "I begin to search a chair.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[5])).toEqual([
 					{ value: "  ", scopes: [grammar.scopeName, 'invalid.illegal'] },
@@ -1034,7 +1034,7 @@ describe('Language-LifePlay', () => {
 					{ value: "// To be continued", scopes: [grammar.scopeName, 'comment'] }
 				]);
 				expect(txt(tokens[8])).toEqual([
-					{ value: "So I let it go.", scopes: [grammar.scopeName] }
+					{ value: "So I let it go.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[9])).toEqual([
 					{ value: "##", scopes: [grammar.scopeName, 'keyword.control'] }
@@ -1045,8 +1045,8 @@ describe('Language-LifePlay', () => {
 				const tokens = grammar.tokenizeLines(''+
 					l("Tag(Threesome, Hugging) && [Tag(Gay)||Tag(Lesbian) || Tag(Bisexual)]")+
 					li(1,"Yeah, touch me babies.")+
-					li(1,"I like how your hands feels on me.")+
-					li(2,"Its my pleasure touch you.")+
+					li(1,"I like the feeling of your hands upon me.")+
+					li(2,"Its my pleasure to touch you.")+
 					l("##")+
 					l("*START* Tag(Threesome, Hugging)")+
 					li(1,"We position ourselves for a group hugging.")+
@@ -1089,14 +1089,14 @@ describe('Language-LifePlay', () => {
 					{ value: "]", scopes: [grammar.scopeName, 'keyword.control.storage.end.bracket.square'] }
 				]);
 				expect(txt(tokens[1])).toEqual([
-					{ value: "Yeah, touch me babies.", scopes: [grammar.scopeName] }
+					{ value: "Yeah, touch me babies.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[2])).toEqual([
-					{ value: "I like how your hands feels on me.", scopes: [grammar.scopeName] }
+					{ value: "I like the feeling of your hands upon me.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[3])).toEqual([
 					{ value: t(1), scopes: [grammar.scopeName, 'blank'] },
-					{ value: "Its my pleasure touch you.", scopes: [grammar.scopeName] }
+					{ value: "Its my pleasure to touch you.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[4])).toEqual([
 					{ value: "##", scopes: [grammar.scopeName, 'keyword.control'] }
@@ -1113,7 +1113,7 @@ describe('Language-LifePlay', () => {
 					{ value: ")", scopes: [grammar.scopeName, 'punctuation.definition.parameters.end.bracket.round'] }
 				]);
 				expect(txt(tokens[6])).toEqual([
-					{ value: "We position ourselves for a group hugging.", scopes: [grammar.scopeName] }
+					{ value: "We position ourselves for a group hugging.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[7])).toEqual([
 					{ value: "##", scopes: [grammar.scopeName, 'invalid.illegal'] }
@@ -1125,13 +1125,13 @@ describe('Language-LifePlay', () => {
 				]);
 				expect(txt(tokens[8]).slice(3)).toEqual(txt(tokens[0]));
 				expect(txt(tokens[9])).toEqual([
-					{ value: "Came here and touch my body, my little babies.", scopes: [grammar.scopeName] }
+					{ value: "Came here and touch my body, my little babies.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[10])).toEqual([
-					{ value: "Huhu, you’re not the only one that going be touch, here.", scopes: [grammar.scopeName] }
+					{ value: "Huhu, you’re not the only one that going be touch, here.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[11])).toEqual([
-					{ value: "Be ready for my magic hands! Haha", scopes: [grammar.scopeName] }
+					{ value: "Be ready for my magic hands! Haha", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[12])).toEqual([
 					{ value: "  #", scopes: [grammar.scopeName, 'invalid.illegal'] },
@@ -1177,25 +1177,25 @@ describe('Language-LifePlay', () => {
 					{ value: "74", scopes: [grammar.scopeName, 'constant.numeric'] }
 				]);
 				expect(txt(tokens[14])).toEqual([
-					{ value: "Your hands were nimble, ", scopes: [grammar.scopeName] },
-					{ value: "<", scopes: [grammar.scopeName, 'punctuation.section.embedded.begin.bracket.angle'] },
-					{ value: "A3", scopes: [grammar.scopeName, 'meta.class.variable'] },
-					{ value: ".", scopes: [grammar.scopeName, 'meta.delimiter.period'] },
-					{ value: "name", scopes: [grammar.scopeName, 'variable'] },
-					{ value: ">", scopes: [grammar.scopeName, 'punctuation.section.embedded.end.bracket.angle'] },
-					{ value: ".", scopes: [grammar.scopeName] }
+					{ value: "Your hands were nimble, ", scopes: [grammar.scopeName, 'string'] },
+					{ value: "<", scopes: [grammar.scopeName, 'string', 'punctuation.section.embedded.begin.bracket.angle'] },
+					{ value: "A3", scopes: [grammar.scopeName, 'string', 'meta.class.variable'] },
+					{ value: ".", scopes: [grammar.scopeName, 'string', 'meta.delimiter.period'] },
+					{ value: "name", scopes: [grammar.scopeName, 'string', 'variable'] },
+					{ value: ">", scopes: [grammar.scopeName, 'string', 'punctuation.section.embedded.end.bracket.angle'] },
+					{ value: ".", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[15])).toEqual([
-					{ value: "I feel really thingy now.", scopes: [grammar.scopeName] }
+					{ value: "I feel really thingy now.", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[16])).toEqual([
-					{ value: "Haha, thanks. And your skin were very smooth, ", scopes: [grammar.scopeName] },
-					{ value: "<", scopes: [grammar.scopeName, 'punctuation.section.embedded.begin.bracket.angle'] },
-					{ value: "A2", scopes: [grammar.scopeName, 'meta.class.variable'] },
-					{ value: ".", scopes: [grammar.scopeName, 'meta.delimiter.period'] },
-					{ value: "name", scopes: [grammar.scopeName, 'variable'] },
-					{ value: ">", scopes: [grammar.scopeName, 'punctuation.section.embedded.end.bracket.angle'] },
-					{ value: ".", scopes: [grammar.scopeName] }
+					{ value: "Haha, thanks. And your skin were very smooth, ", scopes: [grammar.scopeName, 'string'] },
+					{ value: "<", scopes: [grammar.scopeName, 'string', 'punctuation.section.embedded.begin.bracket.angle'] },
+					{ value: "A2", scopes: [grammar.scopeName, 'string', 'meta.class.variable'] },
+					{ value: ".", scopes: [grammar.scopeName, 'string', 'meta.delimiter.period'] },
+					{ value: "name", scopes: [grammar.scopeName, 'string', 'variable'] },
+					{ value: ">", scopes: [grammar.scopeName, 'string', 'punctuation.section.embedded.end.bracket.angle'] },
+					{ value: ".", scopes: [grammar.scopeName, 'string'] }
 				]);
 				expect(txt(tokens[17])).toEqual([
 					{ value: "##", scopes: [grammar.scopeName, 'keyword.control'] }

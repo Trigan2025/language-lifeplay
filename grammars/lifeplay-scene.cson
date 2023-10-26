@@ -5,6 +5,7 @@ fileTypes: [
 name: "LifePlay Scene & AI"
 scopeName: "source.lifeplay-scene"
 limitLineLength: false
+maxTokensPerLine: 500
 patterns: [
 	{
 		comment: "This is to allow lpai and lpscene snippets."
@@ -172,7 +173,7 @@ repository:
 	_statement:
 		patterns: [
 			{
-				match: "\\s*(\"(?:[^\"\\\\]|\\\")*\")"
+				match: "\\s*(\"(?:[^\"\\\\]|\\\\.)*\")"
 				captures:
 					1: patterns: [{ include: "#string" }]
 			}
@@ -304,7 +305,7 @@ repository:
 			contentName: "string"
 			patterns: [
 				{
-					match: "(\\\\.)"
+					match: "(\\\\[\"<>])"
 					captures:
 						1: name: "constant.character.escape"
 				}
@@ -313,34 +314,38 @@ repository:
 		}]
 	parameters:
 		patterns: [{
-			match: "((?:(?:[a-zA-Z_]\\w*\\s*)(?!\\()|(?:[^a-zA-Z_\\s)(][^)(\\s]*\\s*)|\\s*,\\s*|\\s+)+)(?=\\))"
-			captures:
-				1: patterns: [
-					{
-						match: "\\s*(//).*$"
-						captures:
-							1: name: "invalid.illegal"
-					}
-					{
-						match: "\\s*(,)"
-						captures:
-							1: name: "meta.separator"
-					}
-					{
-						match: "\\s*(\"(?:[^\"\\\\]|\\\")*\")"
-						captures:
-							1: patterns: [{ include: "#string" }]
-					}
-					{
-						match: "\\s*(?:([+*-]|/(?!/)|[<>]=?|[!=]=)|([|&]{2}))(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
-						captures:
-							1: name: "keyword.operator"
-							2: name: "keyword.operator.control"
-							3: name: "keyword.operator.other.unit"
-							4: name: "keyword.operator"
-					}
-					{ include: "#param_variable" }
-				]
+			begin: "\\G"
+			end: "\\s*(?=\\))"
+			patterns: [
+				{
+					match: "\\s*(//).*$"
+					captures:
+						1: name: "invalid.illegal"
+				}
+				{
+					match: "\\s*(,)"
+					captures:
+						1: name: "meta.separator"
+				}
+				{
+					match: "\\s*(\"(?:[^\"\\\\]|\\\\.)*\")"
+					captures:
+						1: patterns: [{ include: "#string" }]
+				}
+				{
+					match: "\\s*(?:([+*-]|/(?!/)|[<>]=?|[!=]=)|([|&]{2}))(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+					captures:
+						1: name: "keyword.operator"
+						2: name: "keyword.operator.control"
+						3: name: "keyword.operator.other.unit"
+						4: name: "keyword.operator"
+				}
+				{
+					match: "\\s*(?!\\()([^ )(,)]+)"
+					captures:
+						1: patterns: [{ include: "#param_variable" }]
+				}
+			]
 		}]
 	if:
 		patterns: [{
@@ -603,7 +608,7 @@ repository:
 					7: patterns: [{ include: "#cmt_or_err" }]
 			}
 			{
-				match: "^(?:[ ]{4})+(?:(?:([a-zA-Z_]\\w*)\\s*(?:(\\()\\s*([a-zA-Z]\\w*)\\s*(\\))\\s*)?|(-?[0-9]+)(?:\\s*(::)(.+))?)\\s*(::)\\s*)?(\"(?:[^\"\\\\]|\\\")*\")\\s*(.*)$"
+				match: "^(?:[ ]{4})+(?:(?:([a-zA-Z_]\\w*)\\s*(?:(\\()\\s*([a-zA-Z]\\w*)\\s*(\\))\\s*)?|(-?[0-9]+)(?:\\s*(::)(.+))?)\\s*(::)\\s*)?(\"(?:[^\"\\\\]|\\\\.)*\")\\s*(.*)$"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "punctuation.section.parens.begin"
