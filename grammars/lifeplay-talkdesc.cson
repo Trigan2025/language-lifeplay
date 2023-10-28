@@ -49,7 +49,7 @@ repository:
 			}
 			{
 				comment: "Since we can’t make clear distinctions between on object, a var, and a stat, let just specified that an object begin by a upercase and the others by a lowercase or dash."
-				match: "^\\s*(?:([A-Z]\\w*)|([a-z_]\\w*))"
+				match: "\\s*(?:([A-Z]\\w*)|([a-z_]\\w*))"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "variable"
@@ -92,7 +92,7 @@ repository:
 	_statement:
 		patterns: [
 			{
-				match: "\\s*(\"(?:[^\"\\\\]|\\\\.)*\")"
+				match: "\\s*(\".*?\")"
 				captures:
 					1: patterns: [{ include: "#string" }]
 			}
@@ -149,7 +149,7 @@ repository:
 			endCaptures:
 				1: name: "punctuation.section.embedded.end.bracket.angle"
 			patterns: [{
-				match: "((?:[^\\\\>]|\\\\.)*)"
+				match: "([^>]*)"
 				captures:
 					1: patterns: [{ include: "#_statement" }]
 			}]
@@ -161,14 +161,7 @@ repository:
 				1: name: "blank"
 			end: "$"
 			contentName: "string"
-			patterns: [
-				{
-					match: "(\\\\[<>])"
-					captures:
-						1: name: "constant.character.escape"
-				}
-				{ include: "#interpolations" }
-			]
+			patterns: [{ include: "#interpolations" }]
 		}]
 	string:
 		patterns: [{
@@ -179,14 +172,7 @@ repository:
 			endCaptures:
 				1: name: "string.quote.double.end"
 			contentName: "string"
-			patterns: [
-				{
-					match: "(\\\\[\"<>])"
-					captures:
-						1: name: "constant.character.escape"
-				}
-				{ include: "#interpolations" }
-			]
+			patterns: [{ include: "#interpolations" }]
 		}]
 	parameters:
 		patterns: [{
@@ -204,7 +190,7 @@ repository:
 						1: name: "meta.separator"
 				}
 				{
-					match: "\\s*(\"(?:[^\"\\\\]|\\\\.)*\")"
+					match: "\\s*(\".*?\")"
 					captures:
 						1: patterns: [{ include: "#string" }]
 				}

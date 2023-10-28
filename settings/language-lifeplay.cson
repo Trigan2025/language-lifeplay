@@ -9,8 +9,8 @@
     tabType: "soft"
     commentStart: "// "
     autoIndentOnPast: true
-    increaseIndentPattern: "(?i)^( {4})+((?:else)?if .*|while .*|(?:else|random) *(?://.*)?)$"
-    decreaseIndentPattern: "(?i)^( {4})+(end(?:if|while|random)|else(?:if)?)"
+    increaseIndentPattern: "(?i)^( {4})*((?:else)?if .*|while .*|(?:else|random) *(?://.*)?)$"
+    decreaseIndentPattern: "(?i)^( {4})*(end(?:if|while|random)|else(?:if)?)"
 '.lifeplay-talkdesc.source':
   editor:
     tabLength: 4
@@ -18,6 +18,6 @@
     commentStart: "// "
     increaseIndentPattern: "(?i)^[^ ].*$"
     decreaseIndentPattern: "(?i)^( {1,4})##"
-'.lifeplay-scene.source':
+'.lifeplay-character.source':
   editor:
     commentStart: "// "

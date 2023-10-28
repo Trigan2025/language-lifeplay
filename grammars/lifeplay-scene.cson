@@ -173,7 +173,7 @@ repository:
 	_statement:
 		patterns: [
 			{
-				match: "\\s*(\"(?:[^\"\\\\]|\\\\.)*\")"
+				match: "\\s*(\".*?\")"
 				captures:
 					1: patterns: [{ include: "#string" }]
 			}
@@ -189,6 +189,17 @@ repository:
 				endCaptures:
 					1: name: "punctuation.definition.parameters.end.bracket.round"
 				patterns: [{ include: "#parameters" }]
+			}
+			{
+				begin: "\\s*(\\()(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				beginCaptures:
+					1: name: "punctuation.section.parens.begin"
+					2: name: "keyword.operator.other.unit"
+					3: name: "keyword.operator"
+				end: "\\s*(\\))"
+				endCaptures:
+					1: name: "punctuation.section.parens.end"
+				patterns: [{ include: "#embedded_statement" }]
 			}
 			{
 				begin: "\\s*(\\[)(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
@@ -289,7 +300,7 @@ repository:
 			endCaptures:
 				1: name: "punctuation.section.embedded.end.bracket.angle"
 			patterns: [{
-				match: "((?:[^\\\\>]|\\\\.)*)"
+				match: "([^>]*)"
 				captures:
 					1: patterns: [{ include: "#embedded_statement" }]
 			}]
@@ -303,14 +314,7 @@ repository:
 			endCaptures:
 				1: name: "string.quote.double.end"
 			contentName: "string"
-			patterns: [
-				{
-					match: "(\\\\[\"<>])"
-					captures:
-						1: name: "constant.character.escape"
-				}
-				{ include: "#interpolations" }
-			]
+			patterns: [{ include: "#interpolations" }]
 		}]
 	parameters:
 		patterns: [{
@@ -328,7 +332,7 @@ repository:
 						1: name: "meta.separator"
 				}
 				{
-					match: "\\s*(\"(?:[^\"\\\\]|\\\\.)*\")"
+					match: "\\s*(\".*?\")"
 					captures:
 						1: patterns: [{ include: "#string" }]
 				}
@@ -489,6 +493,11 @@ repository:
 					4: patterns: [{ include: "#if" }]
 			}
 			{
+				match: "^\\s*(//).*$"
+				captures:
+					1: name: "invalid.illegal"
+			}
+			{
 				comment: "Lets mark the first line that do not match as the trigger to enter the body part."
 				begin: "^"
 				end: "\\z"
@@ -514,13 +523,13 @@ repository:
 	lp_body:
 		patterns: [
 			{
-				match: "^(?:[ ]{4})+((?i:End(?:If|While|Random)|Random(?!\\s*\\()))\\s*(\\S.*)?$"
+				match: "^(?:[ ]{4})*((?i:End(?:If|While|Random)|Random(?!\\s*\\()))\\s*(\\S.*)?$"
 				captures:
 					1: name: "keyword"
 					2: patterns: [{ include: "#cmt_or_err" }]
 			}
 			{
-				match: "^(?:[ ]{4})+((?i:Else|(?:Else)?If|While))\\s+(.*)$"
+				match: "^(?:[ ]{4})*((?i:Else|(?:Else)?If|While))\\s+(.*)$"
 				captures:
 					1: name: "keyword"
 					2: patterns: [{ include: "#if" }]
@@ -529,7 +538,7 @@ repository:
 	lp_body_post:
 		patterns: [
 			{
-				match: "^(?:[ ]{4})+(?:([a-zA-Z_]\\w*)(\\:))?([a-zA-Z_]\\w*)\\s*(=>)\\s*(.*)$"
+				match: "^(?:[ ]{4})*(?:([a-zA-Z_]\\w*)(\\:))?([a-zA-Z_]\\w*)\\s*(=>)\\s*(.*)$"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "meta.delimiter.colon"
@@ -538,7 +547,7 @@ repository:
 					5: patterns: [{ include: "#statement" }]
 			}
 			{
-				match: "^(?:[ ]{4})+([a-zA-Z_]\\w*)(?:(?:(\\.)([a-zA-Z_]\\w*))?\\s*([+*/-]=|=(>?))|(:)([a-zA-Z_]\\w*)\\s*([+*/-]=|=>|=([^>])))\\s*(.*)$"
+				match: "^(?:[ ]{4})*([a-zA-Z_]\\w*)(?:(?:(\\.)([a-zA-Z_]\\w*))?\\s*([+*/-]=|=(>?))|(:)([a-zA-Z_]\\w*)\\s*([+*/-]=|=>|=([^>])))\\s*(.*)$"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "meta.delimiter.period"
@@ -552,7 +561,7 @@ repository:
 					10: patterns: [{ include: "#statement" }]
 			}
 			{
-				begin: "^(?:[ ]{4})+(?:([a-zA-Z_]\\w*)\\s*)?((?(1)\\.\\s*)[a-zA-Z]\\w*)\\s*(\\()(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				begin: "^(?:[ ]{4})*(?:([a-zA-Z_]\\w*)\\s*)?((?(1)\\.\\s*)[a-zA-Z]\\w*)\\s*(\\()(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
 				beginCaptures:
 					1: name: "meta.class.variable"
 					2: patterns: [{ include: "#isSpecialFnt" }]
@@ -577,7 +586,7 @@ repository:
 			{ include: "#lp_body_init" }
 			{ include: "#lp_body" }
 			{
-				match: "^(?:[ ]{4})+((?i:Scene(?:Start|End)|QuestEnd))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
+				match: "^(?:[ ]{4})*((?i:Scene(?:Start|End)|QuestEnd))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
 				captures:
 					1: name: "entity.name.support.function"
 					2: name: "punctuation.definition.parameters.begin.bracket.round"
@@ -588,7 +597,7 @@ repository:
 					5: patterns: [{ include: "#cmt_or_err" }]
 			}
 			{
-				match: "^(?:[ ]{4})+((?i:followUp))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
+				match: "^(?:[ ]{4})*((?i:followUp))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
 				captures:
 					1: name: "entity.name.support.function"
 					2: name: "punctuation.definition.parameters.begin.bracket.round"
@@ -597,7 +606,7 @@ repository:
 					5: patterns: [{ include: "#cmt_or_err" }]
 			}
 			{
-				match: "^(?:[ ]{4})+([a-zA-Z_]\\w*)(\\.)((?i:passOn))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
+				match: "^(?:[ ]{4})*([a-zA-Z_]\\w*)(\\.)((?i:passOn))(\\()([^)]*)(\\))\\s*(\\S.*)?$"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "meta.delimiter.period"
@@ -608,7 +617,7 @@ repository:
 					7: patterns: [{ include: "#cmt_or_err" }]
 			}
 			{
-				match: "^(?:[ ]{4})+(?:(?:([a-zA-Z_]\\w*)\\s*(?:(\\()\\s*([a-zA-Z]\\w*)\\s*(\\))\\s*)?|(-?[0-9]+)(?:\\s*(::)(.+))?)\\s*(::)\\s*)?(\"(?:[^\"\\\\]|\\\\.)*\")\\s*(.*)$"
+				match: "^(?:[ ]{4})*(?:(?:([a-zA-Z_]\\w*)\\s*(?:(\\()\\s*([a-zA-Z]\\w*)\\s*(\\))\\s*)?|(-?[0-9]+)(?:\\s*(::)(.+))?)\\s*(::)\\s*)?(\".*?\")\\s*(.*)$"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "punctuation.section.parens.begin"
