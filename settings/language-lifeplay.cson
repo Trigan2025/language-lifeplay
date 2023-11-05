@@ -21,3 +21,6 @@
 '.lifeplay-character.source':
   editor:
     commentStart: "// "
+  'language-lifeplay':
+    enforceCrLf: false
+    enforceTabType: false

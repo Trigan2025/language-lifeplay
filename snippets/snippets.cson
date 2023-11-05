@@ -10,6 +10,17 @@
 			MODULE_DESCRIPTION: $5
 			MODULE_REQUIREMENTS: $6
 		"""
+	'ADDON':
+		'prefix': 'ADDON'
+		'description': 'Will generate the default body of an addon file. (There is in fact no difference with a module file in the structure)'
+		'body': """
+			MODULE_UNIQUEID: $1
+			MODULE_NAME: $2
+			MODULE_AUTHOR: $3
+			MODULE_LINK: ${4:none}
+			MODULE_DESCRIPTION: $5
+			MODULE_REQUIREMENTS: $6
+		"""
 	'QUEST':
 		'prefix': 'QUEST'
 		'description': 'Will generate the default body of a quest file.'
@@ -135,14 +146,14 @@
 		'description': 'Will simply unwrap the structure of the Random EndRandom structure.'
 		'body': """
 			Random
-			    ${1:A = X}
-			    ${2:A = Y}
+			    ${1:A}${2: = X}
+			    ${1:A}${3: = Y}
 			EndRandom
 		"""
 	'Set background 3D':
 		'prefix': 'setBackground'
 		'description': 'Make sure that setBackground is also called before setting the background so that it can be cleared at scene end.'
-		'body': "setBackground($1)\r\nsetBackground3d($2)"
+		'body': "setBackground($1)\r\nsetBackground3d(${2:Module/A Module/Worlds/preset}.lpword${3:, ${4:persist}${5:, ${6:async}}})$0"
 
 '.source.lifeplay-character':
 	'INFO':

@@ -10,87 +10,196 @@ function txt(A, extra_scopes=0) {
 }
 
 describe('Language-LifePlay', () => {
-	let editor=atom, grammar;
+	let grammar;
 
 	beforeEach(() => {
-		waitsForPromise({timeout: 400, label: 'language activation'},
-			() => editor.packages.activatePackage('language-lifeplay')
+		waitsForPromise({timeout: 800, label: 'language activation'},
+			() => atom.packages.activatePackage('language-lifeplay')
 		);
 	});
 
 	describe('Line endings managing', () => {
 		it("should be activated", () => {
-			expect(editor.packages.isPackageActive("language-lifeplay")).toBe(true);
+			expect(atom.packages.isPackageActive("language-lifeplay")).toBe(true);
 		});
 
-		beforeEach(() => {
-			waitsForPromise({timeout: 400, label: 'opening sample'}, () => {
-				return editor.workspace.open('sample-LF.lpscene').then((e) => {
-					// console.log("sample-LF.lpscene loading returns: ", e);
-				});
+		describe('when the enforced CrLf setting is set to true', () => {
+			beforeEach(() => {
+				atom.config.set('language-lifeplay.enforceCrLf', true, { scopeSelector: '.source.lifeplay-scene'});
+				waitsForPromise({timeout: 800, label: 'opening sample'},
+					() => atom.workspace.open('sample-LF.lpscene')
+				);
+			});
+
+			it('verify line endings', () => {
+				expect(atom.config.get('language-lifeplay.enforceCrLf', { scope: ['source.lifeplay-scene'] })).toBe(true);
+				expect(atom.workspace.getActiveTextEditor().getText()).toBe(''+
+					l('WHAT: none', true)+
+					li(1,'SceneStart()', true)+
+					li(2,'continue = true', true)+
+					li(2,'while continue', true)+
+					li(3,'if true', true)+
+					li(4,'continue = false', true)+
+					li(4,'//...', true)+
+					li(3,'endIf', true)+
+					li(2,'endWhile', true)+
+					li(1,'SceneEnd()', true)
+				);
 			});
 		});
 
-		it('verify line endings', () => {
-			expect(atom.workspace.getActiveTextEditor().getText()).toBe(''+
-				li(0,'WHAT: none', true)+
-				li(1,'SceneStart()', true)+
-				li(1,'continue = true', true)+
-				li(1,'while continue', true)+
-				li(2,'if true', true)+
-				li(3,'continue = false', true)+
-				li(3,'//...', true)+
-				li(2,'endIf', true)+
-				li(1,'endWhile', true)+
-				li(1,'SceneEnd()', true)
-			);
+		describe('when the enforced CrLf setting is set to false', () => {
+			describe('when opening a scene file', () => {
+				beforeEach(() => {
+					atom.config.set('language-lifeplay.enforceCrLf', false, { scopeSelector: '.source.lifeplay-scene'});
+					waitsForPromise({timeout: 800, label: 'opening sample'},
+						() => atom.workspace.open('sample-LF.lpscene')
+					);
+				});
+
+				it('verify line endings', () => {
+					expect(atom.workspace.getActiveTextEditor().getText()).toBe(''+
+						l('WHAT: none')+
+						li(1,'SceneStart()')+
+						li(2,'continue = true')+
+						li(2,'while continue')+
+						li(3,'if true')+
+						li(4,'continue = false')+
+						li(4,'//...')+
+						li(3,'endIf')+
+						li(2,'endWhile')+
+						li(1,'SceneEnd()')
+					);
+				});
+			});
 		});
 	});
 
 	describe('Settings managing', () => {
 		it("should be activated", () => {
-			expect(editor.packages.isPackageActive("language-lifeplay")).toBe(true);
+			expect(atom.packages.isPackageActive("language-lifeplay")).toBe(true);
 		});
 
 		it('verify initial settings', () => {
-			expect(editor.config.get('editor.tabLength', { scope: ['source.lifeplay-mod'] })).toBe(4);
-			expect(editor.config.get('editor.tabLength', { scope: ['source.lifeplay-scene'] })).toBe(4);
-			expect(editor.config.get('editor.tabLength', { scope: ['source.lifeplay-talkdesc'] })).toBe(4);
-			expect(editor.config.get('editor.tabType', { scope: ['source.lifeplay-mod'] })).toBe("soft");
-			expect(editor.config.get('editor.tabType', { scope: ['source.lifeplay-scene'] })).toBe("soft");
-			expect(editor.config.get('editor.tabType', { scope: ['source.lifeplay-talkdesc'] })).toBe("soft");
+			expect([
+				atom.config.get('editor.tabLength', { scope: ['source.lifeplay-mod'] }),
+				atom.config.get('editor.tabLength', { scope: ['source.lifeplay-scene'] }),
+				atom.config.get('editor.tabLength', { scope: ['source.lifeplay-talkdesc'] }),
+				atom.config.get('editor.tabType', { scope: ['source.lifeplay-mod'] }),
+				atom.config.get('editor.tabType', { scope: ['source.lifeplay-scene'] }),
+				atom.config.get('editor.tabType', { scope: ['source.lifeplay-talkdesc'] })
+			]).toEqual([4,4,4,"soft","soft","soft"]);
+			expect([
+				atom.config.get('language-lifeplay.enforceCrLf', { scope: ['source.lifeplay-mod'] }),
+				atom.config.get('language-lifeplay.enforceCrLf', { scope: ['source.lifeplay-scene'] }),
+				atom.config.get('language-lifeplay.enforceCrLf', { scope: ['source.lifeplay-talkdesc'] }),
+				atom.config.get('language-lifeplay.enforceCrLf', { scope: ['source.lifeplay-character'] }),
+				atom.config.get('language-lifeplay.enforceTabType', { scope: ['source.lifeplay-mod'] }),
+				atom.config.get('language-lifeplay.enforceTabType', { scope: ['source.lifeplay-scene'] }),
+				atom.config.get('language-lifeplay.enforceTabType', { scope: ['source.lifeplay-talkdesc'] }),
+				atom.config.get('language-lifeplay.enforceTabType', { scope: ['source.lifeplay-character'] })
+			]).toEqual([true,true,true,false,true,true,true,false]);
 		});
 
-		describe('modifying settings', () => {
+		describe('for settings with enforced tab-type option set to true', () => {
+			it('enforce tab-type of settings when it is modified', () => {
+				atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-mod' });
+				atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-scene' });
+				atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-talkdesc' });
+				atom.config.set('editor.tabType', "hard", { scopeSelector: '.source.lifeplay-mod' });
+				atom.config.set('editor.tabType', "auto", { scopeSelector: '.source.lifeplay-scene' });
+				atom.config.set('editor.tabType', "hard", { scopeSelector: '.source.lifeplay-talkdesc' });
+
+				expect([
+					atom.config.get('editor.tabLength', { scope: ['source.lifeplay-mod'] }),
+					atom.config.get('editor.tabLength', { scope: ['source.lifeplay-scene'] }),
+					atom.config.get('editor.tabLength', { scope: ['source.lifeplay-talkdesc'] }),
+					atom.config.get('editor.tabType', { scope: ['source.lifeplay-mod'] }),
+					atom.config.get('editor.tabType', { scope: ['source.lifeplay-scene'] }),
+					atom.config.get('editor.tabType', { scope: ['source.lifeplay-talkdesc'] })
+				]).toEqual([4,4,4,"soft","soft","soft"]);
+			});
+		});
+
+		describe('for settings with enforced tab-type option set to false', () => {
 			beforeEach(() => {
-				editor.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-mod' });
-				editor.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-scene' });
-				editor.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-talkdesc' });
-				editor.config.set('editor.tabType', "hard", { scopeSelector: '.source.lifeplay-mod' });
-				editor.config.set('editor.tabType', "auto", { scopeSelector: '.source.lifeplay-scene' });
-				editor.config.set('editor.tabType', "hard", { scopeSelector: '.source.lifeplay-talkdesc' });
+				// jasmine.attachToDOM(atom.views.getView(atom.workspace));
+				// runs(() => {
+					atom.config.set('language-lifeplay.enforceTabType', false, { scopeSelector: '.source.lifeplay-mod'});
+					atom.config.set('language-lifeplay.enforceTabType', false, { scopeSelector: '.source.lifeplay-scene'});
+					atom.config.set('language-lifeplay.enforceTabType', false, { scopeSelector: '.source.lifeplay-talkdesc'});
+				// });
 			});
 
-			it('verify that the settings have been correctly enforced', () => {
-				expect(editor.config.get('editor.tabLength', { scope: ['source.lifeplay-mod'] })).toBe(4);
-				expect(editor.config.get('editor.tabLength', { scope: ['source.lifeplay-scene'] })).toBe(4);
-				expect(editor.config.get('editor.tabLength', { scope: ['source.lifeplay-talkdesc'] })).toBe(4);
-				expect(editor.config.get('editor.tabType', { scope: ['source.lifeplay-mod'] })).toBe("soft");
-				expect(editor.config.get('editor.tabType', { scope: ['source.lifeplay-scene'] })).toBe("soft");
-				expect(editor.config.get('editor.tabType', { scope: ['source.lifeplay-talkdesc'] })).toBe("soft");
+			it('do not enforce tab-type of settings when it is modified', () => {
+				atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-mod' });
+				atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-scene' });
+				atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-talkdesc' });
+				atom.config.set('editor.tabType', "hard", { scopeSelector: '.source.lifeplay-mod' });
+				atom.config.set('editor.tabType', "auto", { scopeSelector: '.source.lifeplay-scene' });
+				atom.config.set('editor.tabType', "hard", { scopeSelector: '.source.lifeplay-talkdesc' });
+
+				expect([
+					atom.config.get('editor.tabLength', { scope: ['source.lifeplay-mod'] }),
+					atom.config.get('editor.tabLength', { scope: ['source.lifeplay-scene'] }),
+					atom.config.get('editor.tabLength', { scope: ['source.lifeplay-talkdesc'] }),
+					atom.config.get('editor.tabType', { scope: ['source.lifeplay-mod'] }),
+					atom.config.get('editor.tabType', { scope: ['source.lifeplay-scene'] }),
+					atom.config.get('editor.tabType', { scope: ['source.lifeplay-talkdesc'] })
+				]).toEqual([7,7,7,"hard","auto","hard"]);
+
+				describe('when toggled back to be enforced', () => {
+					beforeEach(() => {
+						waitsForPromise({timeout: 800, label: 'language activation'},
+							() => atom.packages.activatePackage('language-lifeplay')
+						);
+						jasmine.attachToDOM(atom.views.getView(atom.workspace));
+						atom.config.set('language-lifeplay.enforceTabType', false, { scopeSelector: '.source.lifeplay-mod'});
+						atom.config.set('language-lifeplay.enforceTabType', false, { scopeSelector: '.source.lifeplay-scene'});
+						atom.config.set('language-lifeplay.enforceTabType', false, { scopeSelector: '.source.lifeplay-talkdesc'});
+						atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-mod' });
+						atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-scene' });
+						atom.config.set('editor.tabLength', 7, { scopeSelector: '.source.lifeplay-talkdesc' });
+						atom.config.set('editor.tabType', "hard", { scopeSelector: '.source.lifeplay-mod' });
+						atom.config.set('editor.tabType', "auto", { scopeSelector: '.source.lifeplay-scene' });
+						atom.config.set('editor.tabType', "hard", { scopeSelector: '.source.lifeplay-talkdesc' });
+						waitsForPromise({timeout: 800, label: 'opening sample'},
+							() => atom.workspace.open('sample-LF.lpscene')
+						);
+					});
+
+					it('however re-enforced those that are being toggled', () => {
+						expect(atom.workspace.getTextEditors().length).toBe(1);
+						expect(atom.packages.isPackageActive("language-lifeplay")).toBe(true);
+						const view = atom.views.getView(atom.workspace.getActiveTextEditor());
+						atom.commands.dispatch(view, 'language-lifeplay:toggle-enforced-tabType');
+						// waitsForPromise({timeout: 200, label: 'next update after toggle-enforced-tabType'},
+						// 	() => atom.workspace.getActiveTextEditor().getElement().getNextUpdatePromise());
+
+						// There appears to be an obscure event occurring unpredictably and either without an error message or with an unrelated error message.
+						expect([
+							atom.config.get('editor.tabLength', { scope: ['source.lifeplay-mod'] }),
+							atom.config.get('editor.tabLength', { scope: ['source.lifeplay-scene'] }),
+							atom.config.get('editor.tabLength', { scope: ['source.lifeplay-talkdesc'] }),
+							atom.config.get('editor.tabType', { scope: ['source.lifeplay-mod'] }),
+							atom.config.get('editor.tabType', { scope: ['source.lifeplay-scene'] }),
+							atom.config.get('editor.tabType', { scope: ['source.lifeplay-talkdesc'] })
+						]).toEqual([7,4,7,"hard","soft","hard"]);
+					});
+				});
 			});
 		});
 	});
 
 	describe('Grammars', () => {
 		it("should be activated", () => {
-			expect(editor.packages.isPackageActive("language-lifeplay")).toBe(true);
+			expect(atom.packages.isPackageActive("language-lifeplay")).toBe(true);
 		});
 
 		describe('LifePlay-Mod grammar', () => {
 			beforeEach(() => {
 				runs(() => {
-					grammar = editor.grammars.grammarForScopeName('source.lifeplay-mod');
+					grammar = atom.grammars.grammarForScopeName('source.lifeplay-mod');
 				});
 			});
 
@@ -395,7 +504,7 @@ describe('Language-LifePlay', () => {
 		describe('LifePlay-Scene grammar', () => {
 			beforeEach(() => {
 				runs(() => {
-					grammar = editor.grammars.grammarForScopeName('source.lifeplay-scene');
+					grammar = atom.grammars.grammarForScopeName('source.lifeplay-scene');
 				});
 			});
 
@@ -942,7 +1051,7 @@ describe('Language-LifePlay', () => {
 		describe('LifePlay-TalkDesc grammar', () => {
 			beforeEach(() => {
 				runs(() => {
-					grammar = editor.grammars.grammarForScopeName('source.lifeplay-talkdesc');
+					grammar = atom.grammars.grammarForScopeName('source.lifeplay-talkdesc');
 				});
 			});
 
@@ -1206,7 +1315,7 @@ describe('Language-LifePlay', () => {
 		describe('LifePlay-Character grammar', () => {
 			beforeEach(() => {
 				runs(() => {
-					grammar = editor.grammars.grammarForScopeName('source.lifeplay-character');
+					grammar = atom.grammars.grammarForScopeName('source.lifeplay-character');
 				});
 			});
 

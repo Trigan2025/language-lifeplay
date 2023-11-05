@@ -1,6 +1,6 @@
 {
   "name": "language-lifeplay",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "",
   "keywords": [
     "lifeplay",
@@ -12,5 +12,17 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "repository": "https://github.com/Trigan2025/language-lifeplay",
-  "main":"./lib/main"
+  "main":"./lib/main",
+  "configSchema": {
+    "enforceCrLf": {
+      "description": "Enforce CRLF line-endings",
+      "type": "boolean",
+      "default": true
+    },
+    "enforceTabType": {
+      "description": "Enforce 4-spaces indentations",
+      "type": "boolean",
+      "default": true
+    }
+  }
 }

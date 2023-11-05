@@ -1,0 +1,15 @@
+'menu': [
+
+  {
+    label: '&Packages',
+    submenu: [
+      {
+        label: 'Language-LifePlay',
+        submenu: [
+          { label: 'Toggle Enforced line-endings', command: 'language-lifeplay:toggle-enforced-crlf' },
+          { label: 'Toggle Enforced tab-type', command: 'language-lifeplay:toggle-enforced-tabType' }
+        ]
+      }
+    ]
+  }
+]
