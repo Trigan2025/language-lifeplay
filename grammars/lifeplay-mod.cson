@@ -11,23 +11,33 @@ limitLineLength: false
 maxTokensPerLine: 500
 patterns: [
 	{
+		comment: "This is to allow lpai and lpscene snippets."
+		begin: "^(?=(?i:LP))"
+		end: "\\z"
+		name: "root-snippet-domain"
+	}
+	{
 		begin: "^(?=MODULE_)"
 		end: "\\z"
+		name: "lpmod"
 		patterns: [{ include: "#lpmod" }]
 	}
 	{
 		begin: "^(?=QUEST|ID)"
 		end: "\\z"
+		name: "lpquest"
 		patterns: [{ include: "#lpquest" }]
 	}
 	{
 		begin: "^(?=ACTION_)"
 		end: "\\z"
+		name: "lpaction"
 		patterns: [{ include: "#lpaction" }]
 	}
 	{
 		begin: "^(?=STAT_)"
 		end: "\\z"
+		name: "lpstat"
 		patterns: [{ include: "#lpstat" }]
 	}
 ]
@@ -290,7 +300,7 @@ repository:
 	isSpecialFnt:
 		patterns: [
 			{
-				match: "^\\s*(?i:(\\.)\\s*(?:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|setDatingId|getID)|(convertToLocalCurrency))|(Random|Round|Floor|Power)|(\\.?)\\s*(.*))\\s*$"
+				match: "^\\s*(?i:(\\.)\\s*(?:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|modifyActorVar|setDatingId|getID)|(convertToLocalCurrency))|(Random|Round|Floor|Power)|(\\.?)\\s*(.*))\\s*$"
 				captures:
 					1: name: "meta.delimiter.period"
 					2: name: "entity.name.support.function"

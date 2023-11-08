@@ -1,6 +1,6 @@
-'.source.lifeplay-mod':
+'.source.lifeplay-mod .root-snippet-domain':
 	'MODULE':
-		'prefix': 'MODULE_'
+		'prefix': 'LPMODULE'
 		'description': 'Will generate the default body of an module file.'
 		'body': """
 			MODULE_UNIQUEID: $1
@@ -11,7 +11,7 @@
 			MODULE_REQUIREMENTS: $6
 		"""
 	'ADDON':
-		'prefix': 'ADDON'
+		'prefix': 'LPADDON'
 		'description': 'Will generate the default body of an addon file. (There is in fact no difference with a module file in the structure)'
 		'body': """
 			MODULE_UNIQUEID: $1
@@ -22,7 +22,7 @@
 			MODULE_REQUIREMENTS: $6
 		"""
 	'QUEST':
-		'prefix': 'QUEST'
+		'prefix': 'LPQUEST'
 		'description': 'Will generate the default body of a quest file.'
 		'body': """
 			ID: $1
@@ -33,7 +33,7 @@
 			CONDITIONS: ${6:none}
 		"""
 	'ACTION':
-		'prefix': 'ACTION_'
+		'prefix': 'LPACTION'
 		'description': 'Will generate the default body of an action file.'
 		'body': """
 			ACTION_UNIQUEID: $1
@@ -50,7 +50,7 @@
 			ALSO_TIMEOUT: $12
 		"""
 	'INTERACTION':
-		'prefix': 'INTERACTION'
+		'prefix': 'LPINTERACTION'
 		'description': 'Will generate the default body of an interaction file.'
 		'body': """
 			ACTION_UNIQUEID: $1
@@ -68,7 +68,7 @@
 			WHO: $13
 		"""
 	'STAT':
-		'prefix': 'STAT_'
+		'prefix': 'LPSTAT'
 		'description': 'Will generate the default body of a stat file.'
 		'body': """
 			STAT_ID: $1
@@ -77,12 +77,12 @@
 			NPC_ONLY: ${4:false}
 			STAT_MIN: ${5:0}
 			STAT_MAX: ${6:100}
-			HIGHER_BETTER: ${7:true}
+			HIGHER_BETTER: ${7:no_difficulty_adjustment}
 			DEFAULT_VALUE: ${8:0}
 			DAILY_CHANGE: ${9:0}
 		"""
 
-'.source.lifeplay-scene:not(.lpscene):not(.lpai)':
+'.source.lifeplay-scene .root-snippet-domain':
 	'SCENE':
 		'prefix': 'LPSCENE'
 		'description': 'Will generate the default body of a lpscene file.'

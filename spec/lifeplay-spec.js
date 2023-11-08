@@ -219,47 +219,47 @@ describe('Language-LifePlay', () => {
 					l("MODULE_REQUIREMENTS: @_Base")
 				);
 
-				expect(txt(tokens[0])).toEqual([
-					{ value: "MODULE_", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: "ID", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold', 'invalid'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "vin_VanillaRealistic", scopes: [grammar.scopeName, 'entity.name.section.label'] }
+				expect(txt(tokens[0],1)).toEqual([
+					{ value: "MODULE_", scopes: [grammar.scopeName, 'lpmod', 'punctuation.definition.heading.bold'] },
+					{ value: "ID", scopes: [grammar.scopeName, 'lpmod', 'punctuation.definition.heading.bold', 'invalid'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpmod', 'keyword'] },
+					{ value: "vin_VanillaRealistic", scopes: [grammar.scopeName, 'lpmod', 'entity.name.section.label'] }
 				]);
-				expect(txt(tokens[1])).toEqual([
-					{ value: "MODULE_NAME", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "Official Vanilla Adult Module", scopes: [grammar.scopeName, 'string'] }
+				expect(txt(tokens[1],1)).toEqual([
+					{ value: "MODULE_NAME", scopes: [grammar.scopeName, 'lpmod', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpmod', 'keyword'] },
+					{ value: "Official Vanilla Adult Module", scopes: [grammar.scopeName, 'lpmod', 'string'] }
 				]);
-				expect(txt(tokens[2])).toEqual([
-					{ value: "MODULE_AUTHOR", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "@", scopes: [grammar.scopeName, 'invalid'] },
-					{ value: "Vinfamy", scopes: [grammar.scopeName, 'string'] }
+				expect(txt(tokens[2],1)).toEqual([
+					{ value: "MODULE_AUTHOR", scopes: [grammar.scopeName, 'lpmod', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpmod', 'keyword'] },
+					{ value: "@", scopes: [grammar.scopeName, 'lpmod', 'invalid'] },
+					{ value: "Vinfamy", scopes: [grammar.scopeName, 'lpmod', 'string'] }
 				]);
-				expect(txt(tokens[3])).toEqual([
-					{ value: "MODULE_LINK", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "https", scopes: [grammar.scopeName, 'meta.link', 'constant'] },
-					{ value: "://", scopes: [grammar.scopeName, 'meta.link'] },
-					{ value: "www.patreon.com", scopes: [grammar.scopeName, 'meta.link', 'string'] },
-					{ value: "/", scopes: [grammar.scopeName, 'meta.link', 'meta.separator'] },
-					{ value: "vinfamy", scopes: [grammar.scopeName, 'meta.link'] }
+				expect(txt(tokens[3],1)).toEqual([
+					{ value: "MODULE_LINK", scopes: [grammar.scopeName, 'lpmod', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpmod', 'keyword'] },
+					{ value: "https", scopes: [grammar.scopeName, 'lpmod', 'meta.link', 'constant'] },
+					{ value: "://", scopes: [grammar.scopeName, 'lpmod', 'meta.link'] },
+					{ value: "www.patreon.com", scopes: [grammar.scopeName, 'lpmod', 'meta.link', 'string'] },
+					{ value: "/", scopes: [grammar.scopeName, 'lpmod', 'meta.link', 'meta.separator'] },
+					{ value: "vinfamy", scopes: [grammar.scopeName, 'lpmod', 'meta.link'] }
 				]);
-				expect(txt(tokens[4])).toEqual([
-					{ value: "MODULE_DESCRIPTION", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: " Vanilla sexual situations that can happen in an average person's real life.", scopes: [grammar.scopeName] }
+				expect(txt(tokens[4],1)).toEqual([
+					{ value: "MODULE_DESCRIPTION", scopes: [grammar.scopeName, 'lpmod', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpmod', 'keyword'] },
+					{ value: " Vanilla sexual situations that can happen in an average person's real life.", scopes: [grammar.scopeName, 'lpmod'] }
 				]);
-				expect(txt(tokens[5])).toEqual([
-					{ value: "MODULE_VERSION", scopes: [grammar.scopeName, 'punctuation.definition.heading'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "1.0.0", scopes: [grammar.scopeName, 'none'] }
+				expect(txt(tokens[5],1)).toEqual([
+					{ value: "MODULE_VERSION", scopes: [grammar.scopeName, 'lpmod', 'punctuation.definition.heading'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpmod', 'keyword'] },
+					{ value: "1.0.0", scopes: [grammar.scopeName, 'lpmod', 'none'] }
 				]);
-				expect(txt(tokens[6])).toEqual([
-					{ value: "MODULE_REQUIREMENTS", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "@", scopes: [grammar.scopeName, 'invalid'] },
-					{ value: "_Base", scopes: [grammar.scopeName] }
+				expect(txt(tokens[6],1)).toEqual([
+					{ value: "MODULE_REQUIREMENTS", scopes: [grammar.scopeName, 'lpmod', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpmod', 'keyword'] },
+					{ value: "@", scopes: [grammar.scopeName, 'lpmod', 'invalid'] },
+					{ value: "_Base", scopes: [grammar.scopeName, 'lpmod'] }
 				]);
 			});
 
@@ -273,37 +273,37 @@ describe('Language-LifePlay', () => {
 					l("START: mpwill_start")
 				);
 
-				expect(txt(tokens[0])).toEqual([
-					{ value: "QUEST_", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold', 'invalid'] },
-					{ value: "ID", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "mpwill", scopes: [grammar.scopeName, 'entity.name.section.label'] }
+				expect(txt(tokens[0],1)).toEqual([
+					{ value: "QUEST_", scopes: [grammar.scopeName, 'lpquest', 'punctuation.definition.heading.bold', 'invalid'] },
+					{ value: "ID", scopes: [grammar.scopeName, 'lpquest', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpquest', 'keyword'] },
+					{ value: "mpwill", scopes: [grammar.scopeName, 'lpquest', 'entity.name.section.label'] }
 				]);
-				expect(txt(tokens[1])).toEqual([
-					{ value: "NAME", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "Missing Person - William M", scopes: [grammar.scopeName, 'string'] }
+				expect(txt(tokens[1],1)).toEqual([
+					{ value: "NAME", scopes: [grammar.scopeName, 'lpquest', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpquest', 'keyword'] },
+					{ value: "Missing Person - William M", scopes: [grammar.scopeName, 'lpquest', 'string'] }
 				]);
-				expect(txt(tokens[2])).toEqual([
-					{ value: "DESC", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: "RIPTION", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold', 'invalid'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: " Take part in a missing person investigation for William M, …", scopes: [grammar.scopeName] }
+				expect(txt(tokens[2],1)).toEqual([
+					{ value: "DESC", scopes: [grammar.scopeName, 'lpquest', 'punctuation.definition.heading.bold'] },
+					{ value: "RIPTION", scopes: [grammar.scopeName, 'lpquest', 'punctuation.definition.heading.bold', 'invalid'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpquest', 'keyword'] },
+					{ value: " Take part in a missing person investigation for William M, …", scopes: [grammar.scopeName, 'lpquest'] }
 				]);
-				expect(txt(tokens[3])).toEqual([
-					{ value: "ONCE", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "true", scopes: [grammar.scopeName, 'constant.boolean'] }
+				expect(txt(tokens[3],1)).toEqual([
+					{ value: "ONCE", scopes: [grammar.scopeName, 'lpquest', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpquest', 'keyword'] },
+					{ value: "true", scopes: [grammar.scopeName, 'lpquest', 'constant.boolean'] }
 				]);
-				expect(txt(tokens[4])).toEqual([
-					{ value: "CONDITIONS", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "none", scopes: [grammar.scopeName, 'constant.none'] }
+				expect(txt(tokens[4],1)).toEqual([
+					{ value: "CONDITIONS", scopes: [grammar.scopeName, 'lpquest', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpquest', 'keyword'] },
+					{ value: "none", scopes: [grammar.scopeName, 'lpquest', 'constant.none'] }
 				]);
-				expect(txt(tokens[5])).toEqual([
-					{ value: "START", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "mpwill_start", scopes: [grammar.scopeName, 'entity.name.section.label'] }
+				expect(txt(tokens[5],1)).toEqual([
+					{ value: "START", scopes: [grammar.scopeName, 'lpquest', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpquest', 'keyword'] },
+					{ value: "mpwill_start", scopes: [grammar.scopeName, 'lpquest', 'entity.name.section.label'] }
 				]);
 			});
 
@@ -324,115 +324,115 @@ describe('Language-LifePlay', () => {
 					l("ANIMATION: drinktea")
 				);
 
-				expect(txt(tokens[0])).toEqual([
-					{ value: "ACTION_UNIQUEID", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "drink_coffee", scopes: [grammar.scopeName, 'entity.name.section.label'] }
+				expect(txt(tokens[0],1)).toEqual([
+					{ value: "ACTION_UNIQUEID", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "drink_coffee", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] }
 				]);
-				expect(txt(tokens[1])).toEqual([
-					{ value: "ACTION_NAME", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "Drink coffee", scopes: [grammar.scopeName, 'string'] }
+				expect(txt(tokens[1],1)).toEqual([
+					{ value: "ACTION_NAME", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "Drink coffee", scopes: [grammar.scopeName, 'lpaction', 'string'] }
 				]);
-				expect(txt(tokens[2])).toEqual([
-					{ value: "WHERE", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "cafe", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "coffee", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "department_store", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "fast_food", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "hotel", scopes: [grammar.scopeName, 'entity.name.section.label'] }
+				expect(txt(tokens[2],1)).toEqual([
+					{ value: "WHERE", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "cafe", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "coffee", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "department_store", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "fast_food", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "hotel", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] }
 				]);
-				expect(txt(tokens[3])).toEqual([
-					{ value: "WHEN", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "0", scopes: [grammar.scopeName, 'constant.numeric'] },
-					{ value: "-", scopes: [grammar.scopeName, 'meta.separator.dash'] },
-					{ value: "24", scopes: [grammar.scopeName, 'constant.numeric'] }
+				expect(txt(tokens[3],1)).toEqual([
+					{ value: "WHEN", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "0", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] },
+					{ value: "-", scopes: [grammar.scopeName, 'lpaction', 'meta.separator.dash'] },
+					{ value: "24", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] }
 				]);
-				expect(txt(tokens[4])).toEqual([
-					{ value: "MINUTES", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "5", scopes: [grammar.scopeName, 'constant.numeric'] },
-					{ value: "-", scopes: [grammar.scopeName, 'meta.separator.dash'] },
-					{ value: "20", scopes: [grammar.scopeName, 'constant.numeric'] }
+				expect(txt(tokens[4],1)).toEqual([
+					{ value: "MINUTES", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "5", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] },
+					{ value: "-", scopes: [grammar.scopeName, 'lpaction', 'meta.separator.dash'] },
+					{ value: "20", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] }
 				]);
-				expect(txt(tokens[5])).toEqual([
-					{ value: "TIMEOUT_MINUTES", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "120", scopes: [grammar.scopeName, 'constant.numeric'] }
+				expect(txt(tokens[5],1)).toEqual([
+					{ value: "TIMEOUT_MINUTES", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "120", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] }
 				]);
-				expect(txt(tokens[6])).toEqual([
-					{ value: "ALSO_TIMEOUT", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "drink_coffee_in", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "drink_tea", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "drink_tea_in", scopes: [grammar.scopeName, 'entity.name.section.label'] }
+				expect(txt(tokens[6],1)).toEqual([
+					{ value: "ALSO_TIMEOUT", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "drink_coffee_in", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "drink_tea", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "drink_tea_in", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] }
 				]);
-				expect(txt(tokens[7])).toEqual([
-					{ value: "EFFECTS", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "money", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: "-", scopes: [grammar.scopeName, 'constant.numeric', 'keyword.operator.other.unit'] },
-					{ value: "2", scopes: [grammar.scopeName, 'constant.numeric'] },
-					{ value: "(", scopes: [grammar.scopeName, 'punctuation.section.parens.open'] },
-					{ value: "START", scopes: [grammar.scopeName, 'constant'] },
-					{ value: ")", scopes: [grammar.scopeName, 'punctuation.section.parens.close'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "mood", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: "+", scopes: [grammar.scopeName, 'constant.numeric', 'keyword.operator.other.unit'] },
-					{ value: "2", scopes: [grammar.scopeName, 'constant.numeric'] },
-					{ value: "(", scopes: [grammar.scopeName, 'punctuation.section.parens.open'] },
-					{ value: "END", scopes: [grammar.scopeName, 'constant'] },
-					{ value: ")", scopes: [grammar.scopeName, 'punctuation.section.parens.close'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "energy", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: "+", scopes: [grammar.scopeName, 'constant.numeric', 'keyword.operator.other.unit'] },
-					{ value: "10", scopes: [grammar.scopeName, 'constant.numeric'] },
-					{ value: "(", scopes: [grammar.scopeName, 'punctuation.section.parens.open'] },
-					{ value: "DURATION", scopes: [grammar.scopeName, 'constant'] },
-					{ value: ")", scopes: [grammar.scopeName, 'punctuation.section.parens.close'] },
-					{ value: ",", scopes: [grammar.scopeName, 'meta.separator'] },
-					{ value: "intoxication", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: "-", scopes: [grammar.scopeName, 'constant.numeric', 'keyword.operator.other.unit'] },
-					{ value: "25", scopes: [grammar.scopeName, 'constant.numeric'] },
-					{ value: "(", scopes: [grammar.scopeName, 'punctuation.section.parens.open'] },
-					{ value: "DURATION", scopes: [grammar.scopeName, 'constant'] },
-					{ value: ")", scopes: [grammar.scopeName, 'punctuation.section.parens.close'] }
+				expect(txt(tokens[7],1)).toEqual([
+					{ value: "EFFECTS", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "money", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: "-", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric', 'keyword.operator.other.unit'] },
+					{ value: "2", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] },
+					{ value: "(", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.open'] },
+					{ value: "START", scopes: [grammar.scopeName, 'lpaction', 'constant'] },
+					{ value: ")", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.close'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "mood", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: "+", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric', 'keyword.operator.other.unit'] },
+					{ value: "2", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] },
+					{ value: "(", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.open'] },
+					{ value: "END", scopes: [grammar.scopeName, 'lpaction', 'constant'] },
+					{ value: ")", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.close'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "energy", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: "+", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric', 'keyword.operator.other.unit'] },
+					{ value: "10", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] },
+					{ value: "(", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.open'] },
+					{ value: "DURATION", scopes: [grammar.scopeName, 'lpaction', 'constant'] },
+					{ value: ")", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.close'] },
+					{ value: ",", scopes: [grammar.scopeName, 'lpaction', 'meta.separator'] },
+					{ value: "intoxication", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: "-", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric', 'keyword.operator.other.unit'] },
+					{ value: "25", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] },
+					{ value: "(", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.open'] },
+					{ value: "DURATION", scopes: [grammar.scopeName, 'lpaction', 'constant'] },
+					{ value: ")", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.close'] }
 				]);
-				expect(txt(tokens[8])).toEqual([
-					{ value: "ACTION_UNIQUEID", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] }
+				expect(txt(tokens[8],1)).toEqual([
+					{ value: "ACTION_UNIQUEID", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] }
 				]);
-				expect(txt(tokens[9])).toEqual([
-					{ value: "CONDITIONS", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "money", scopes: [grammar.scopeName, 'entity.name.section.label'] },
-					{ value: ">=", scopes: [grammar.scopeName, 'keyword.operator'] },
-					{ value: "2", scopes: [grammar.scopeName, 'constant.numeric'] },
-					{ value: "(", scopes: [grammar.scopeName, 'punctuation.section.parens.open'] },
-					{ value: "STAT_COMPARE", scopes: [grammar.scopeName, 'constant'] },
-					{ value: ")", scopes: [grammar.scopeName, 'punctuation.section.parens.close'] }
+				expect(txt(tokens[9],1)).toEqual([
+					{ value: "CONDITIONS", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "money", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] },
+					{ value: ">=", scopes: [grammar.scopeName, 'lpaction', 'keyword.operator'] },
+					{ value: "2", scopes: [grammar.scopeName, 'lpaction', 'constant.numeric'] },
+					{ value: "(", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.open'] },
+					{ value: "STAT_COMPARE", scopes: [grammar.scopeName, 'lpaction', 'constant'] },
+					{ value: ")", scopes: [grammar.scopeName, 'lpaction', 'punctuation.section.parens.close'] }
 				]);
-				expect(txt(tokens[10])).toEqual([
-					{ value: "MOVE_FIRST", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "true", scopes: [grammar.scopeName, 'constant.boolean'] }
+				expect(txt(tokens[10],1)).toEqual([
+					{ value: "MOVE_FIRST", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "true", scopes: [grammar.scopeName, 'lpaction', 'constant.boolean'] }
 				]);
-				expect(txt(tokens[11])).toEqual([
-					{ value: "SCENE_ALWAYS", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] }
+				expect(txt(tokens[11],1)).toEqual([
+					{ value: "SCENE_ALWAYS", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] }
 				]);
-				expect(txt(tokens[12])).toEqual([
-					{ value: "ANIMATION", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "drinktea", scopes: [grammar.scopeName, 'entity.name.section.label'] }
+				expect(txt(tokens[12],1)).toEqual([
+					{ value: "ANIMATION", scopes: [grammar.scopeName, 'lpaction', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpaction', 'keyword'] },
+					{ value: "drinktea", scopes: [grammar.scopeName, 'lpaction', 'entity.name.section.label'] }
 				]);
 			});
 
@@ -449,54 +449,54 @@ describe('Language-LifePlay', () => {
 					l("NPC_ONLY: false")
 				);
 
-				expect(txt(tokens[0])).toEqual([
-					{ value: "STAT_", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: "UNIQUE", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold', 'invalid'] },
-					{ value: "ID", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "age", scopes: [grammar.scopeName, 'entity.name.section.label'] }
+				expect(txt(tokens[0],1)).toEqual([
+					{ value: "STAT_", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: "UNIQUE", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold', 'invalid'] },
+					{ value: "ID", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "age", scopes: [grammar.scopeName, 'lpstat', 'entity.name.section.label'] }
 				]);
-				expect(txt(tokens[1])).toEqual([
-					{ value: "STAT_NAME", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "Age", scopes: [grammar.scopeName, 'string'] },
-					{ value: ";", scopes: [grammar.scopeName, 'keyword.operator'] },
-					{ value: " How many years old is this person?", scopes: [grammar.scopeName] }
+				expect(txt(tokens[1],1)).toEqual([
+					{ value: "STAT_NAME", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "Age", scopes: [grammar.scopeName, 'lpstat', 'string'] },
+					{ value: ";", scopes: [grammar.scopeName, 'lpstat', 'keyword.operator'] },
+					{ value: " How many years old is this person?", scopes: [grammar.scopeName, 'lpstat'] }
 				]);
-				expect(txt(tokens[2])).toEqual([
-					{ value: "PLAYER_ONLY", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "false", scopes: [grammar.scopeName, 'constant.boolean'] }
+				expect(txt(tokens[2],1)).toEqual([
+					{ value: "PLAYER_ONLY", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "false", scopes: [grammar.scopeName, 'lpstat', 'constant.boolean'] }
 				]);
-				expect(txt(tokens[3])).toEqual([
-					{ value: "HIGHER_BETTER", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "no_difficulty_adjustment", scopes: [grammar.scopeName, 'constant.boolean'] }
+				expect(txt(tokens[3],1)).toEqual([
+					{ value: "HIGHER_BETTER", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "no_difficulty_adjustment", scopes: [grammar.scopeName, 'lpstat', 'constant.boolean'] }
 				]);
-				expect(txt(tokens[4])).toEqual([
-					{ value: "STAT_MIN", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "18", scopes: [grammar.scopeName, 'constant.numeric'] }
+				expect(txt(tokens[4],1)).toEqual([
+					{ value: "STAT_MIN", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "18", scopes: [grammar.scopeName, 'lpstat', 'constant.numeric'] }
 				]);
-				expect(txt(tokens[5])).toEqual([
-					{ value: "STAT_MAX", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "111", scopes: [grammar.scopeName, 'constant.numeric'] }
+				expect(txt(tokens[5],1)).toEqual([
+					{ value: "STAT_MAX", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "111", scopes: [grammar.scopeName, 'lpstat', 'constant.numeric'] }
 				]);
-				expect(txt(tokens[6])).toEqual([
-					{ value: "DAILY_CHANGE", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "0.00273972602", scopes: [grammar.scopeName, 'constant.numeric'] }
+				expect(txt(tokens[6],1)).toEqual([
+					{ value: "DAILY_CHANGE", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "0.00273972602", scopes: [grammar.scopeName, 'lpstat', 'constant.numeric'] }
 				]);
-				expect(txt(tokens[7])).toEqual([
-					{ value: "DEFAULT_VALUE", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "33", scopes: [grammar.scopeName, 'constant.numeric'] }
+				expect(txt(tokens[7],1)).toEqual([
+					{ value: "DEFAULT_VALUE", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "33", scopes: [grammar.scopeName, 'lpstat', 'constant.numeric'] }
 				]);
-				expect(txt(tokens[8])).toEqual([
-					{ value: "NPC_ONLY", scopes: [grammar.scopeName, 'punctuation.definition.heading.bold'] },
-					{ value: ":", scopes: [grammar.scopeName, 'keyword'] },
-					{ value: "false", scopes: [grammar.scopeName, 'constant.boolean'] }
+				expect(txt(tokens[8],1)).toEqual([
+					{ value: "NPC_ONLY", scopes: [grammar.scopeName, 'lpstat', 'punctuation.definition.heading.bold'] },
+					{ value: ":", scopes: [grammar.scopeName, 'lpstat', 'keyword'] },
+					{ value: "false", scopes: [grammar.scopeName, 'lpstat', 'constant.boolean'] }
 				]);
 			});
 		});

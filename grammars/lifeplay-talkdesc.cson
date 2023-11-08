@@ -79,7 +79,7 @@ repository:
 	isSpecialFnt:
 		patterns: [
 			{
-				match: "^\\s*(?i:(\\.)\\s*(?:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|setDatingId|getID)|(convertToLocalCurrency))|(Random|Round|Floor|Power)|(\\.?)\\s*(.*))\\s*$"
+				match: "^\\s*(?i:(\\.)\\s*(?:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|modifyActorVar|setDatingId|getID)|(convertToLocalCurrency))|(Random|Round|Floor|Power)|(\\.?)\\s*(.*))\\s*$"
 				captures:
 					1: name: "meta.delimiter.period"
 					2: name: "entity.name.support.function"
