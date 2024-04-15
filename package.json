@@ -1,6 +1,6 @@
 {
   "name": "language-lifeplay",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "license": "",
   "keywords": [
     "lifeplay",
@@ -12,7 +12,7 @@
     "atom": ">=1.0.0 <2.0.0"
   },
   "repository": "https://github.com/Trigan2025/language-lifeplay",
-  "main":"./lib/main",
+  "main": "./lib/main",
   "configSchema": {
     "enforceCrLf": {
       "description": "Enforce CRLF line-endings",
