@@ -1,14 +1,16 @@
 fileTypes: [ "lpcharacter" ]
 name: "LifePlay Character"
 scopeName: "source.lifeplay-character"
+limitLineLength: false
+maxTokensPerLine: 500
 patterns: [
 	{
-		match: "^\\s*(//.*)$"
+		match: "^[ ]*(//.*)$"
 		captures:
 			1: name: "comment"
 	}
 	{
-		match: "^(INFO)\\s+(Is_Male|Interested_In_(?:Men|Women|Transgender))\\s*(:)(.*)$"
+		match: "^(INFO)[ ]+(Is_Male|Interested_In_(?:Men|Women|Transgender))[ ]*(:)(.*)$"
 		captures:
 			1: patterns: [{ include: "#flag" }]
 			2: name: "storage.entity.name.section"
@@ -16,7 +18,7 @@ patterns: [
 			4: patterns: [{ include: "#bool_values" }]
 	}
 	{
-		match: "^(INFO)\\s+((?:First|Last)_Name)\\s*(:)(.*)$"
+		match: "^(INFO)[ ]+((?:First|Last)_Name)[ ]*(:)(.*)$"
 		captures:
 			1: patterns: [{ include: "#flag" }]
 			2: name: "storage.entity.name.section"
@@ -24,7 +26,7 @@ patterns: [
 			4: patterns: [{ include: "#none_values" }]
 	}
 	{
-		match: "^(INFO)\\s+(Race)\\s*(:)(.*)$"
+		match: "^(INFO)[ ]+(Race)[ ]*(:)(.*)$"
 		captures:
 			1: patterns: [{ include: "#flag" }]
 			2: name: "storage.entity.name.section"
@@ -32,7 +34,7 @@ patterns: [
 			4: patterns: [{ include: "#race_values" }]
 	}
 	{
-		match: "^(INFO)\\s+(Genital)\\s*(:)(.*)$"
+		match: "^(INFO)[ ]+(Genital)[ ]*(:)(.*)$"
 		captures:
 			1: patterns: [{ include: "#flag" }]
 			2: name: "storage.entity.name.section"
@@ -40,7 +42,7 @@ patterns: [
 			4: patterns: [{ include: "#genital_values" }]
 	}
 	{
-		match: "^([A-Z]+[A-Z_]*)\\s+([^\\s\\\\/:;]+)(?:\\s+((?:\\s*[^\\s\\\\/:;]+)*))?\\s*(:)(.*)$"
+		match: "^([A-Z]+[A-Z_]*)[ ]+([^\\s\\\\/:;]+)(?:[ ]+((?:[ ]*[^\\s\\\\/:;]+)*))?[ ]*(:)(.*)$"
 		captures:
 			1: patterns: [{ include: "#flag" }]
 			2: name: "storage.entity.name.section"
@@ -63,26 +65,26 @@ repository:
 		]
 	isNone:
 		patterns: [{
-			match: "^\\s*((?i:none))\\s*$"
+			match: "^[ ]*((?i:none))[ ]*$"
 			captures:
 				1: name: "constant.none"
 		}]
 	bool:
 		patterns: [{
-			match: "^\\s*((?i:true|false))\\s*$"
+			match: "^[ ]*((?i:true|false))[ ]*$"
 			captures:
 				1: name: "constant.boolean"
 		}]
 	float:
 		patterns: [{
-			match: "^\\s*(([+-]?)[0-9]+(?:\\.[0-9]+)?)\\s*$"
+			match: "^[ ]*(([+-]?)[0-9]+(?:\\.[0-9]+)?)[ ]*$"
 			captures:
 				1: name: "constant.numeric"
 				2: name: "keyword.operator.other.unit"
 		}]
 	float_range:
 		patterns: [{
-			match: "^\\s*([+-]?[0-9]+(?:\\.[0-9]+)?)\\s*(=>)\\s*([+-]?[0-9]+(?:\\.[0-9]+)?)\\s*$"
+			match: "^[ ]*([+-]?[0-9]+(?:\\.[0-9]+)?)[ ]*(=>)[ ]*([+-]?[0-9]+(?:\\.[0-9]+)?)[ ]*$"
 			captures:
 				1: patterns: [{ include: "#float" }]
 				2: name: "keyword.operator"
@@ -104,7 +106,7 @@ repository:
 			begin: "^"
 			end: "$"
 			patterns: [{
-				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				match: "[ ]*(?:(,)[ ]*)?([0-9]+(?:\\.[0-9]+)?)(%)[ ]+([^,\\n]+)"
 				captures:
 					1: name: "meta.separator"
 					2: patterns: [{ include: "#float" }]
@@ -120,7 +122,7 @@ repository:
 			begin: "^"
 			end: "$"
 			patterns: [{
-				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				match: "[ ]*(?:(,)[ ]*)?([0-9]+(?:\\.[0-9]+)?)(%)[ ]+([^,\\n]+)"
 				captures:
 					1: name: "meta.separator"
 					2: patterns: [{ include: "#float" }]
@@ -133,7 +135,7 @@ repository:
 			begin: "^"
 			end: "$"
 			patterns: [{
-				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				match: "[ ]*(?:(,)[ ]*)?([0-9]+(?:\\.[0-9]+)?)(%)[ ]+([^,\\n]+)"
 				captures:
 					1: name: "meta.separator"
 					2: patterns: [{ include: "#float" }]
@@ -149,7 +151,7 @@ repository:
 			begin: "^"
 			end: "$"
 			patterns: [{
-				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				match: "[ ]*(?:(,)[ ]*)?([0-9]+(?:\\.[0-9]+)?)(%)[ ]+([^,\\n]+)"
 				captures:
 					1: name: "meta.separator"
 					2: patterns: [{ include: "#float" }]
@@ -166,7 +168,7 @@ repository:
 			begin: "^"
 			end: "$"
 			patterns: [{
-				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				match: "[ ]*(?:(,)[ ]*)?([0-9]+(?:\\.[0-9]+)?)(%)[ ]+([^,\\n]+)"
 				captures:
 					1: name: "meta.separator"
 					2: patterns: [{ include: "#float" }]
@@ -187,7 +189,7 @@ repository:
 			begin: "^"
 			end: "$"
 			patterns: [{
-				match: "\\s*(?:(,)\\s*)?([0-9]+(?:\\.[0-9]+)?)(%)\\s+([^,\\n]+)"
+				match: "[ ]*(?:(,)[ ]*)?([0-9]+(?:\\.[0-9]+)?)(%)[ ]+([^,\\n]+)"
 				captures:
 					1: name: "meta.separator"
 					2: patterns: [{ include: "#float" }]

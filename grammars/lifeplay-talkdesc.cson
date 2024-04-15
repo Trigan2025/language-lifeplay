@@ -16,19 +16,19 @@ patterns: [{
 repository:
 	isNone:
 		patterns: [{
-			match: "\\s*((?i:none))\\s*"
+			match: "[ ]*((?i:none))[ ]*"
 			captures:
 				1: name: "constant.none"
 		}]
 	bool:
 		patterns: [{
-			match: "\\s*((?i:true|false))\\s*"
+			match: "[ ]*((?i:true|false))[ ]*"
 			captures:
 				1: name: "constant.boolean"
 		}]
 	float:
 		patterns: [{
-			match: "\\s*(([+-]?)[0-9]+(?:\\.[0-9]+)?)\\s*"
+			match: "[ ]*(([+-]?)[0-9]+(?:\\.[0-9]+)?)[ ]*"
 			captures:
 				1: name: "constant.numeric"
 				2: name: "keyword.operator.other.unit"
@@ -39,7 +39,7 @@ repository:
 			{ include: "#bool" }
 			{ include: "#float" }
 			{
-				match: "\\s*([a-zA-Z_]\\w*)(?:(\\.)([a-zA-Z_]\\w*)|(:)([a-zA-Z_]\\w*))"
+				match: "[ ]*([a-zA-Z_]\\w*)(?:(\\.)([a-zA-Z_]\\w*)|(:)([a-zA-Z_]\\w*))"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "meta.delimiter.period"
@@ -49,7 +49,7 @@ repository:
 			}
 			{
 				comment: "Since we can’t make clear distinctions between on object, a var, and a stat, let just specified that an object begin by a upercase and the others by a lowercase or dash."
-				match: "\\s*(?:([A-Z]\\w*)|([a-z_]\\w*))"
+				match: "[ ]*(?:([A-Z]\\w*)|([a-z_]\\w*))"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "variable"
@@ -61,7 +61,7 @@ repository:
 			{ include: "#bool" }
 			{ include: "#float" }
 			{
-				match: "\\s*([a-zA-Z_]\\w*)(?:(\\.)([a-zA-Z_]\\w*)|(:)([a-zA-Z_]\\w*))"
+				match: "[ ]*([a-zA-Z_]\\w*)(?:(\\.)([a-zA-Z_]\\w*)|(:)([a-zA-Z_]\\w*))"
 				captures:
 					1: name: "meta.class.variable"
 					2: name: "meta.delimiter.period"
@@ -71,7 +71,7 @@ repository:
 			}
 			{
 				comment: "Since it can be anything, lets just simply name it."
-				match: "\\s*((?:[^,\\s\\)]+|\\s+(?![,\\)]))+)"
+				match: "[ ]*((?:[^,\\s\\)]+|[ ]+(?![,\\)]))+)"
 				captures:
 					1: name: "function.parameter.variable"
 			}
@@ -79,59 +79,107 @@ repository:
 	isSpecialFnt:
 		patterns: [
 			{
-				match: "^\\s*(?i:(\\.)\\s*(?:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|modifyActorVar|setDatingId|getID)|(convertToLocalCurrency))|(Random|Round|Floor|Power)|(\\.?)\\s*(.*))\\s*$"
+				match: "^(?i:(\\.)(?:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|modifyActorVar|setDatingId|getID)|(convertToLocalCurrency|Round|Floor))|(Random|Power))[ ]*$"
 				captures:
 					1: name: "meta.delimiter.period"
 					2: name: "entity.name.support.function"
 					3: name: "entity.name.support.function.any-method"
 					4: name: "entity.name.support.function.any-method"
-					5: name: "meta.delimiter.period"
-					6: name: "entity.name.function"
+			}
+			{
+				match: "^(?i:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|modifyActorVar|setDatingId|getID|convertToLocalCurrency|Round|Floor)|(\\.)(Random|Power))[ ]*$"
+				captures:
+					1: name: "invalid"
+					2: name: "meta.delimiter.period"
+					3: name: "invalid"
+			}
+			{
+				match: "^(\\.?)(.+)[ ]*$"
+				captures:
+					1: name: "meta.delimiter.period"
+					2: name: "entity.name.function"
 			}
 		]
+	subFnt:
+		patterns: [{
+			begin: "[ ]*(\\))(\\.)([a-zA-Z]\\w*)[ ]*(\\()(?:[ ]*(?=[!+-][0-9a-zA-Z_\\[])(?:([+-])|(!)))?"
+			beginCaptures:
+				1: name: "punctuation.definition.parameters.end.bracket.round"
+				2: name: "meta.delimiter.period"
+				3: patterns: [
+					{
+						match: "^(?i:(convertToLocalCurrency|Round|Floor))[ ]*$"
+						captures:
+							1: name: "entity.name.support.function.any-method"
+					}
+					{
+						match: "^(?i:((?:set|get|clear)Global|(?:set|get)(?:Actor(?:Alias|Var)|GlobalString)|modifyActorVar|setDatingId|getID|Random|Power))[ ]*$"
+						captures:
+							1: name: "invalid"
+							2: name: "meta.delimiter.period"
+							3: name: "invalid"
+					}
+					{
+						match: "^(.+)[ ]*$"
+						captures:
+							1: name: "entity.name.function"
+					}
+				]
+				4: name: "punctuation.definition.parameters.begin.bracket.round"
+				5: name: "keyword.operator.other.unit"
+				6: name: "keyword.operator"
+			end: "[ ]*(?=\\))(?!\\.[a-zA-Z]\\w*[ ]*\\()"
+			patterns: [
+				{ include: "#subFnt" }
+				{ include: "#parameters" }
+			]
+		}]
 	_statement:
 		patterns: [
 			{
-				match: "\\s*(\".*?\")"
+				match: "[ ]*(\".*?\")"
 				captures:
 					1: patterns: [{ include: "#string" }]
 			}
 			{
-				begin: "\\s*(?:([a-zA-Z_]\\w*)\\s*)?((?(1)\\.\\s*)[a-zA-Z]\\w*)\\s*(\\()(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				begin: "[ ]*(?:([a-zA-Z_]\\w*))?((?(1)\\.)[a-zA-Z]\\w*)[ ]*(\\()(?:[ ]*(?=[!+-][0-9a-zA-Z_\\[])(?:([+-])|(!)))?"
 				beginCaptures:
 					1: name: "meta.class.variable"
 					2: patterns: [{ include: "#isSpecialFnt" }]
 					3: name: "punctuation.definition.parameters.begin.bracket.round"
 					4: name: "keyword.operator.other.unit"
 					5: name: "keyword.operator"
-				end: "\\s*(\\))"
+				end: "[ ]*(\\))(?!\\.[a-zA-Z]\\w*[ ]*\\()"
 				endCaptures:
 					1: name: "punctuation.definition.parameters.end.bracket.round"
-				patterns: [{ include: "#parameters" }]
+				patterns: [
+					{ include: "#subFnt" }
+					{ include: "#parameters" }
+				]
 			}
 			{
-				begin: "\\s*(\\[)(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				begin: "[ ]*(\\[)(?:[ ]*(?=[!+-][0-9a-zA-Z_\\[])(?:([+-])|(!)))?"
 				beginCaptures:
 					1: name: "keyword.control.storage.begin.bracket.square"
 					2: name: "keyword.operator.other.unit"
 					3: name: "keyword.operator"
-				end: "\\s*(\\])"
+				end: "[ ]*(\\])"
 				endCaptures:
 					1: name: "keyword.control.storage.end.bracket.square"
 				patterns: [{
 					begin: "(?!\\])"
-					end: "(?=\\]|//|$)"
+					end: "[ ]*(?=\\]|//|$)"
 					patterns: [{ include: "#_statement" }]
 				}]
 			}
 			{
 				comment: "A closing bracket seemingly unpaired."
-				match: "\\s*([\\)\\]])"
+				match: "[ ]*([\\)\\]])"
 				captures:
 					1: name: "invalid.illegal"
 			}
 			{
-				match: "\\s*(?:([+*-]|/(?!/)|[<>]=?|[!=]=)|([|&]{2}))(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+				match: "[ ]*(?:([+*-]|/(?!/)|[<>]=?|[!=]=)|([|&]{2}))(?:[ ]*(?=[!+-][0-9a-zA-Z_\\[])(?:([+-])|(!)))?"
 				captures:
 					1: name: "keyword.operator"
 					2: name: "keyword.operator.control"
@@ -139,6 +187,11 @@ repository:
 					4: name: "keyword.operator"
 			}
 			{ include: "#variable" }
+			{
+				match: "[ ]*(\\.)[ ]*"
+				captures:
+					1: name: "invalid.illegal"
+			}
 		]
 	interpolations:
 		patterns: [{
@@ -156,7 +209,7 @@ repository:
 		}]
 	fenceless_string:
 		patterns: [{
-			begin: "^(\\s*)"
+			begin: "^([ \t]*)"
 			beginCaptures:
 				1: name: "blank"
 			end: "$"
@@ -165,7 +218,7 @@ repository:
 		}]
 	string:
 		patterns: [{
-			begin: "^\\s*(\")"
+			begin: "^[ ]*(\")"
 			beginCaptures:
 				1: name: "string.quote.double.begin"
 			end: "(\")"
@@ -177,25 +230,27 @@ repository:
 	parameters:
 		patterns: [{
 			begin: "\\G"
-			end: "\\s*(?=\\))"
+			end: "[ ]*(?=\\))"
 			patterns: [
 				{
-					match: "\\s*(//).*$"
+					match: "[ ]*(//).*$"
 					captures:
 						1: name: "invalid.illegal"
 				}
 				{
-					match: "\\s*(,)"
+					match: "[ ]*(,)(?:[ ]*(?=[!+-][0-9a-zA-Z_\\[])(?:([+-])|(!)))?"
 					captures:
 						1: name: "meta.separator"
+						2: name: "keyword.operator.other.unit"
+						3: name: "keyword.operator"
 				}
 				{
-					match: "\\s*(\".*?\")"
+					match: "[ ]*(\".*?\")"
 					captures:
 						1: patterns: [{ include: "#string" }]
 				}
 				{
-					match: "\\s*(?:([+*-]|/(?!/)|[<>]=?|[!=]=)|([|&]{2}))(?:\\s*(?:([+-])|(!))(?=[0-9a-zA-Z_\\[]))?"
+					match: "[ ]*(?:([+*-]|/(?!/)|[<>]=?|[!=]=)|([|&]{2}))(?:[ ]*(?=[!+-][0-9a-zA-Z_\\[])(?:([+-])|(!)))?"
 					captures:
 						1: name: "keyword.operator"
 						2: name: "keyword.operator.control"
@@ -203,7 +258,7 @@ repository:
 						4: name: "keyword.operator"
 				}
 				{
-					match: "\\s*(?!\\()([^ )(,)]+)"
+					match: "[ ]*(?!\\()([^ )(,]+)"
 					captures:
 						1: patterns: [{ include: "#param_variable" }]
 				}
@@ -217,7 +272,7 @@ repository:
 					1: name: "comment"
 			}
 			{
-				match: "([^/]).*$"
+				match: "(.).*$"
 				captures:
 					1: name: "invalid.illegal"
 			}
@@ -234,7 +289,7 @@ repository:
 					end: "$"
 					patterns: [
 						{
-							match: "\\s*(//.*)$"
+							match: "[ ]*(//.*)$"
 							captures:
 								1: name: "comment"
 						}
@@ -268,7 +323,7 @@ repository:
 				patterns: [{ include: "$self" }]
 			}
 			{
-				begin: "^(##)\\s*(.*)$"
+				begin: "^(##)[ ]*(.*)$"
 				beginCaptures:
 					1: name: "keyword.control"
 					2: patterns: [{ include: "#cmt_or_err" }]
@@ -286,7 +341,7 @@ repository:
 	lineX:
 		patterns: [
 			{
-				begin: "^(?:(##)\\s*(.*)|([ ]{0,3}[^ ]).*)$"
+				begin: "^(?:(##)[ ]*(.*)|([ ]{0,3}[^ ]).*)$"
 				beginCaptures:
 					1: name: "keyword.control"
 					2: patterns: [{ include: "#cmt_or_err" }]
@@ -318,7 +373,7 @@ repository:
 					1: name: "invalid.illegal"
 			}
 			{
-				begin: "^(##)\\s*(.*)$"
+				begin: "^(##)[ ]*(.*)$"
 				beginCaptures:
 					1: name: "keyword.control"
 					2: patterns: [{ include: "#cmt_or_err" }]
