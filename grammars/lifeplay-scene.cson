@@ -639,9 +639,7 @@ repository:
 				end: "[ ]*(\\))(?!\\.[a-zA-Z]\\w*[ ]*\\()(.*)$"
 				endCaptures:
 					1: name: "punctuation.definition.parameters.end.bracket.round"
-					2: name: "keyword.operator.other.unit"
-					3: name: "keyword.operator"
-					4: patterns: [{ include: "#statement" }]
+					2: patterns: [{ include: "#statement" }]
 				patterns: [
 					{ include: "#subFnt" }
 					{ include: "#parameters" }
