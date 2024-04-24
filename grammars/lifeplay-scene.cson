@@ -310,6 +310,12 @@ repository:
 			end: "$"
 			patterns: [
 				{
+					match: "(.*)[ ]*(//.*)$"
+					captures:
+						1: patterns: [{ include: "#inline" }]
+						2: name: "comment"
+				}
+				{
 					match: "(.*)[ ]*(;)[ ]*(?:(?i:(If) (?:[ ]*(?=[!+-][0-9a-zA-Z_\\[])(?:([+-])|(!)))?((?:[^\";]|\"[^\"]*\")*)(?:;|$))?)"
 					captures:
 						1: patterns: [{ include: "#inline" }]
@@ -345,11 +351,6 @@ repository:
 						11: name: "keyword.operator"
 				}
 				{ include: "#_statement" }
-				{
-					match: "[ ]*(//.*)$"
-					captures:
-						1: name: "comment"
-				}
 			]
 		}]
 	interpolations:
