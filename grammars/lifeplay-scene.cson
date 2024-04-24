@@ -550,11 +550,6 @@ repository:
 					6: patterns: [{ include: "#inline" }]
 			}
 			{
-				match: "^[ \t]*(//).*$"
-				captures:
-					1: name: "invalid.illegal"
-			}
-			{
 				comment: "Lets mark the first line that do not match as the trigger to enter the body part."
 				begin: "^"
 				end: "\\z"
